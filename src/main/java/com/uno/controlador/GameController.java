@@ -1,4 +1,4 @@
-package com.uno;
+package com.uno.controlador;
 
 public class GameController {
 }
