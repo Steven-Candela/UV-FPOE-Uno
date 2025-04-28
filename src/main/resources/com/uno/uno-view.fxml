@@ -15,7 +15,7 @@
          <children>
             <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@/com/uno/imagenes/card_uno.png" />
+                  <Image url="@imagenes/card_uno.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
@@ -47,12 +47,12 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                <children>
-                  <Button fx:id="jugarButton" mnemonicParsing="false" text="Jugar">
+                  <Button fx:id="jugarCartaButton" mnemonicParsing="false" text="Jugar Carta">
                      <font>
                         <Font name="Book Antiqua" size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="pasarButtom" mnemonicParsing="false" text="Pasar">
+                  <Button fx:id="pasarTurnoButtom" mnemonicParsing="false" text="Pasar Turno">
                      <font>
                         <Font name="Book Antiqua" size="18.0" />
                      </font>
@@ -83,7 +83,7 @@
                <children>
                   <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@/com/uno/imagenes/deck_of_cards.png" />
+                        <Image url="@imagenes/deck_of_cards.png" />
                      </image>
                   </ImageView>
                </children>
