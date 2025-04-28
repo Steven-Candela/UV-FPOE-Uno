@@ -9,20 +9,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="593.0" prefWidth="708.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="593.0" prefWidth="778.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="150.0" prefWidth="303.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../../Downloads/cards-uno/cards-uno/card_uno.png" />
+                  <Image url="@imagenes/card_uno.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../../../Downloads/cards-uno/cards-uno/1_blue.png" />
-               </image>
             </ImageView>
             <Label text="Turno: Máquina">
                <font>
@@ -38,45 +34,30 @@
             <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../../../Downloads/cards-uno/cards-uno/6_red.png" />
-                     </image>
                   </ImageView>
                   <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../../../Downloads/cards-uno/cards-uno/0_green.png" />
-                     </image>
                   </ImageView>
                   <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../../../Downloads/cards-uno/cards-uno/9_yellow.png" />
-                     </image>
                   </ImageView>
                   <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../../../Downloads/cards-uno/cards-uno/reserve_blue.png" />
-                     </image>
                   </ImageView>
                   <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../../../Downloads/cards-uno/cards-uno/skip_green.png" />
-                     </image>
                   </ImageView>
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                <children>
-                  <Button mnemonicParsing="false" text="Jugar">
+                  <Button fx:id="jugarCartaButton" mnemonicParsing="false" text="Jugar Carta">
                      <font>
                         <Font name="Book Antiqua" size="18.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" text="Pasar">
+                  <Button fx:id="pasarTurnoButtom" mnemonicParsing="false" text="Pasar Turno">
                      <font>
                         <Font name="Book Antiqua" size="18.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" text="UNO">
+                  <Button fx:id="unoButton" mnemonicParsing="false" text="UNO">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -102,7 +83,7 @@
                <children>
                   <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../Downloads/cards-uno/cards-uno/deck_of_cards.png" />
+                        <Image url="@imagenes/deck_of_cards.png" />
                      </image>
                   </ImageView>
                </children>
