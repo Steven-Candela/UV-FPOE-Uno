@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="453.0" prefWidth="430.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.uno.controlador.InstructionsController">
+   <children>
+      <Label layoutX="119.0" layoutY="20.0" text="Instrucciones del Juego">
+         <font>
+            <Font name="Cambria Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="31.0" layoutY="49.0" prefHeight="340.0" prefWidth="369.0" text="El objetivo es ser el primer jugador en quedarse sin cartas.&#10;Cada jugador recibe 5 cartas automáticamente al iniciar el &#10;juego.&#10;Una carta se colocará en la mesa para comenzar la partida.&#10;Cada jugador puede jugar una carta que coincida en color, &#10;número o símbolo con la carta en la mesa.&#10;Si no puede jugar, debe tomar una carta del mazo y pasar &#10;el turno.&#10;&#10;➕2: El oponente toma 2 cartas.&#10;➕4: El oponente toma 4 cartas.&#10;🔄 Cambio de color: Se puede elegir el color que &#10;continuará el juego.&#10;⏭ Ceder turno: El oponente pierde su turno.&#10;&#10;Si a un jugador le queda una sola carta, debe presionar el &#10;botón “UNO” en menos de 4 segundos.&#10;Si no presiona “UNO” a tiempo, debe tomar una carta &#10;como castigo.&#10;Gana quien se quede sin cartas primero.">
+         <font>
+            <Font name="Georgia" size="14.0" />
+         </font>
+      </Label>
+      <Button fx:id="volverAlMenuButton" layoutX="155.0" layoutY="400.0" mnemonicParsing="false" onAction="#onActionVolverAlMenuButton" text="Volver al Menú">
+         <font>
+            <Font name="Bookman Old Style" size="14.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
