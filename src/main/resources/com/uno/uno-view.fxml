@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="593.0" prefWidth="778.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="593.0" prefWidth="778.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.uno.controlador.GameController">
    <center>
       <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="150.0" prefWidth="303.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
@@ -47,17 +47,17 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                <children>
-                  <Button fx:id="jugarCartaButton" mnemonicParsing="false" text="Jugar Carta">
+                  <Button fx:id="jugarCartaButton" mnemonicParsing="false" onAction="#onActionJugarCartaButton" text="Jugar Carta">
                      <font>
                         <Font name="Book Antiqua" size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="pasarTurnoButtom" mnemonicParsing="false" text="Pasar Turno">
+                  <Button fx:id="pasarTurnoButtom" mnemonicParsing="false" onAction="#onActionPasarTurnoButton" text="Pasar Turno">
                      <font>
                         <Font name="Book Antiqua" size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="unoButton" mnemonicParsing="false" text="UNO">
+                  <Button fx:id="unoButton" mnemonicParsing="false" onAction="#onActionUnoButton" text="UNO">
                      <font>
                         <Font size="18.0" />
                      </font>
