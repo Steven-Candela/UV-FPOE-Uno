@@ -9,68 +9,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="593.0" prefWidth="778.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.uno.controlador.GameController">
-   <center>
-      <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="150.0" prefWidth="303.0" spacing="20.0" BorderPane.alignment="CENTER">
-         <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@imagenes/card_uno.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-            </ImageView>
-            <Label text="Turno: Máquina">
-               <font>
-                  <Font name="Gabriola" size="20.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
-   </center>
-   <bottom>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
-               <children>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                  </ImageView>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
-               <children>
-                  <Button fx:id="jugarCartaButton" mnemonicParsing="false" onAction="#onActionJugarCartaButton" text="Jugar Carta">
-                     <font>
-                        <Font name="Book Antiqua" size="18.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="pasarTurnoButtom" mnemonicParsing="false" onAction="#onActionPasarTurnoButton" text="Pasar Turno">
-                     <font>
-                        <Font name="Book Antiqua" size="18.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="unoButton" mnemonicParsing="false" onAction="#onActionUnoButton" text="UNO">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Button>
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-   </bottom>
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.uno.controlador.GameController"
+            prefHeight="593.0" prefWidth="778.0">
+
    <top>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="100.0">
                <children>
                   <Label text="UNO">
                      <font>
@@ -79,7 +26,7 @@
                   </Label>
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="100.0">
                <children>
                   <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -91,10 +38,60 @@
          </children>
       </VBox>
    </top>
+
+   <center>
+      <HBox alignment="CENTER" spacing="20.0" BorderPane.alignment="CENTER" prefHeight="150.0">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@imagenes/card_uno.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="cartaCentro" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+            <Label text="Turno: Máquina">
+               <font>
+                  <Font name="Gabriola" size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+   </center>
+
+   <bottom>
+      <VBox BorderPane.alignment="CENTER" prefHeight="200.0">
+         <children>
+            <HBox fx:id="manoJugador" alignment="TOP_CENTER" spacing="10.0" prefHeight="100.0">
+               <!-- Aquí se mostrarán las cartas del jugador -->
+            </HBox>
+            <HBox alignment="CENTER" spacing="30.0" prefHeight="100.0">
+               <children>
+                  <Button fx:id="jugarCartaButton" text="Jugar Carta" onAction="#onActionJugarCartaButton">
+                     <font>
+                        <Font name="Book Antiqua" size="18.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="pasarTurnoButtom" text="Pasar Turno" onAction="#onActionPasarTurnoButton">
+                     <font>
+                        <Font name="Book Antiqua" size="18.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="unoButton" text="UNO" onAction="#onActionUnoButton">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </bottom>
+
    <right>
       <VBox alignment="CENTER" prefHeight="193.0" prefWidth="117.0" BorderPane.alignment="CENTER" />
    </right>
+
    <left>
       <VBox prefHeight="193.0" prefWidth="117.0" BorderPane.alignment="CENTER" />
    </left>
+
 </BorderPane>

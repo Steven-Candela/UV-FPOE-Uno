@@ -1,9 +1,8 @@
-package com.uno.models;
+package com.uno.modelo;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import com.uno.modelo.Carta;
 
 public class Baraja {
 
