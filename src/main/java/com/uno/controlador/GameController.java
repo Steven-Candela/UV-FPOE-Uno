@@ -2,6 +2,7 @@ package com.uno.controlador;
 
 import com.uno.modelo.Baraja;
 import com.uno.modelo.Carta;
+import com.uno.modelo.CartaInvalidaException;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,6 +17,7 @@ public class GameController {
     private List<Carta> manoHumano;
     private List<Carta> manoCPU;
     private Carta cartaSeleccionada;
+    private Carta cartaCentroActual;
 
     @FXML
     private HBox manoJugador;
@@ -41,6 +43,7 @@ public class GameController {
 
     private void mostrarCartaCentral(Carta carta) {
         if (carta != null) {
+            cartaCentroActual = carta;
             String ruta = "/com/uno/imagenes/" + carta.getImagen();
             Image img = new Image(getClass().getResourceAsStream(ruta));
             cartaCentro.setImage(img);
@@ -71,13 +74,26 @@ public class GameController {
     private void onActionJugarCartaButton(ActionEvent event) {
         if (cartaSeleccionada != null) {
             // Jugar la carta
-            mostrarCartaCentral(cartaSeleccionada);
-            manoHumano.remove(cartaSeleccionada);
-            cartaSeleccionada = null;
-            mostrarCartasJugador();
-            System.out.println("Carta jugada con éxito.");
+            try {
+                validarCarta(cartaSeleccionada);
+                mostrarCartaCentral(cartaSeleccionada);
+                manoHumano.remove(cartaSeleccionada);
+                cartaSeleccionada = null;
+                mostrarCartasJugador();
+                System.out.println("Carta jugada con éxito.");
+            } catch (CartaInvalidaException e) {
+                System.out.println(e.getMessage());
+            }
         } else {
             System.out.println("Ninguna carta seleccionada.");
+        }
+    }
+
+    @FXML
+    private void validarCarta(Carta carta) throws CartaInvalidaException {
+        if (!carta.getColor().equals(cartaCentroActual.getColor()) &&
+        carta.getValor() != cartaCentroActual.getValor()) {
+        throw new CartaInvalidaException("Carta Invalida");
         }
     }
 
