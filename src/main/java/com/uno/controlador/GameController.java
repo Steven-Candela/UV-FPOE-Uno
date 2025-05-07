@@ -3,13 +3,17 @@ package com.uno.controlador;
 import com.uno.modelo.Baraja;
 import com.uno.modelo.Carta;
 import com.uno.modelo.CartaInvalidaException;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.event.ActionEvent;
+import javafx.util.Duration;
 
 import java.util.List;
+import java.util.Random;
 
 public class GameController {
 
@@ -18,12 +22,16 @@ public class GameController {
     private List<Carta> manoCPU;
     private Carta cartaSeleccionada;
     private Carta cartaCentroActual;
+    private boolean turnoHumano = true;
 
     @FXML
     private HBox manoJugador;
 
     @FXML
     private ImageView cartaCentro;
+
+    @FXML
+    private Label turnoLabel;
 
     @FXML
     private void initialize() {
@@ -72,6 +80,11 @@ public class GameController {
 
     @FXML
     private void onActionJugarCartaButton(ActionEvent event) {
+        if (!turnoHumano) {
+            System.out.println("No es tu turno");
+            return;
+        }
+
         if (cartaSeleccionada != null) {
             // Jugar la carta
             try {
@@ -81,6 +94,9 @@ public class GameController {
                 cartaSeleccionada = null;
                 mostrarCartasJugador();
                 System.out.println("Carta jugada con éxito.");
+
+                turnoHumano = false;
+                jugarTurnoCPU();
             } catch (CartaInvalidaException e) {
                 System.out.println(e.getMessage());
             }
@@ -95,6 +111,43 @@ public class GameController {
         carta.getValor() != cartaCentroActual.getValor()) {
         throw new CartaInvalidaException("Carta Invalida");
         }
+    }
+
+    private void jugarTurnoCPU() {
+        turnoLabel.setText("Turno: Máquina");
+
+        Random random = new Random();
+        int tiempoPensamiento = 1 + random.nextInt(3);
+        PauseTransition pausa = new PauseTransition(Duration.seconds(tiempoPensamiento));
+        pausa.setOnFinished(e -> {
+            System.out.println("La maquina está pensando");
+
+            // Busca una carta valida
+            for (Carta carta : manoCPU) {
+                if (carta.getColor().equals(cartaCentroActual.getColor()) ||
+                carta.getValor() == cartaCentroActual.getValor()) {
+
+                    System.out.println("La maquina juega: " + carta);
+                    mostrarCartaCentral(carta);
+                    manoCPU.remove(carta);
+
+                    turnoLabel.setText("Turno: Jugador");
+                    turnoHumano = true;
+                    return;
+                }
+            }
+
+            // Si no tiene carta valida, roba una
+            Carta robada = baraja.robarCarta();
+            if (robada != null) {
+                manoCPU.add(robada);
+                System.out.println("La maquina no tiene carta valida, tons roba una de la baraja");
+            }
+
+            turnoLabel.setText("Turno: Jugador");
+            turnoHumano = true;
+        });
+        pausa.play();
     }
 
     @FXML
