@@ -151,7 +151,9 @@ public class GameController {
     private void validarCarta(Carta carta) throws CartaInvalidaException {
         if (!carta.getColor().equals(cartaCentroActual.getColor()) &&
         carta.getValor() != cartaCentroActual.getValor()) {
-        throw new CartaInvalidaException("Carta Invalida");
+            if (!carta.getColor().equals("All")) {
+                throw new CartaInvalidaException("Carta Invalida");
+            }
         }
     }
 

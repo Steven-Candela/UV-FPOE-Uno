@@ -1,27 +1,21 @@
 package com.uno.modelo;
 
-public class CartaEspecial {
+public class CartaEspecial extends Carta{
 
     private String habilidad;
-    private String color;
-    private String imagen; // nombre del archivo, ej: "reverse_blue.png"
 
     public CartaEspecial(String color, String hablidad) {
+        super(color, -999999999); // El valor puede ser cualquiera, que no sea 0-9
         this.habilidad = hablidad;
-        this.color = color;
-        this.imagen = habilidad + "_" + color + ".png";
+        super.setImagen(habilidad + "_" + color + ".png");
     }
 
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
+    public void skipHabilidad(String turno) {
+
     }
 
     public String getHabilidad() {return habilidad;}
 
-    public String getColor() {return color;}
-
-    public String getImagen() {return imagen;}
-
     @Override
-    public String toString() {return habilidad + " de " + color;}
+    public String toString() {return habilidad + " de " + getColor();}
 }
