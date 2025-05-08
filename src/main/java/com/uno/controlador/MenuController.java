@@ -12,6 +12,7 @@ public class MenuController {
 
     @FXML
     private void onActionJugarButton(ActionEvent event) throws IOException {
+        System.out.println("El juego inicia");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/uno/uno-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
