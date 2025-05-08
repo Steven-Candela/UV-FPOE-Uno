@@ -7,11 +7,9 @@ import java.util.List;
 public class Baraja {
 
     private List<Carta> cartas;
-    private List<CartaEspecial> cartasEspeciales;
 
     public Baraja() {
         cartas = new ArrayList<>();
-        cartasEspeciales = new ArrayList<>();
         crearCartas();
         mezclar();
     }
@@ -23,11 +21,20 @@ public class Baraja {
                 cartas.add(new Carta(color, i));
             }
         }
-        String[] habilidades = {"reverse", "skip"};
-        for (String habilidad : habilidades) {
-            for (String color : colores) {
-                cartasEspeciales.add(new CartaEspecial(color, habilidad));
-            }
+        for (String color : colores) {
+            cartas.add(new CartaEspecial(color, "skip"));
+        }
+        for (String color : colores) {
+            cartas.add(new CartaEspecial(color, "+2"));
+            Carta UltimaCarta = cartas.get(cartas.size() - 1);
+            UltimaCarta.setImagen("2_wild_draw_" + color + ".png");
+
+        }
+
+        for (int i = 0; i < 4; i++ ) {
+            cartas.add(new CartaEspecial("All", "+4"));
+            Carta UltimaCarta = cartas.get(cartas.size() - 1);
+            UltimaCarta.setImagen("4_wild_draw.png");
         }
         CartaEspecial wild = new CartaEspecial("All", "SelectColor");
         wild.setImagen("wild.png");
