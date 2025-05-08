@@ -125,10 +125,10 @@ public class GameController {
                             Thread.sleep(tiempo);
                             if (!unoPresionado) {
                                 Platform.runLater(() -> {
-                                    // Castigar al jugador: robar 2 cartas
-                                    manoHumano.addAll(baraja.robarVarias(2));
+                                    // Castigar al jugador: robar 1 carta
+                                    manoHumano.addAll(baraja.robarVarias(1));
                                     mostrarCartasJugador();
-                                    System.out.println("¡No dijiste UNO a tiempo! Robas 2 cartas.");
+                                    System.out.println("¡No dijiste UNO a tiempo! Robas 1 carta.");
                                 });
                             }
                         } catch (InterruptedException e) {
@@ -157,13 +157,14 @@ public class GameController {
 
     private void jugarTurnoCPU() {
         turnoLabel.setText("Turno: Máquina");
+
         Random random = new Random();
         int tiempoPensamiento = 1 + random.nextInt(3);
         PauseTransition pausa = new PauseTransition(Duration.seconds(tiempoPensamiento));
-
         pausa.setOnFinished(e -> {
             System.out.println("La maquina está pensando");
 
+            // Busca una carta valida
             for (Carta carta : manoCPU) {
                 if (carta.getColor().equals(cartaCentroActual.getColor()) ||
                         carta.getValor() == cartaCentroActual.getValor()) {
@@ -186,14 +187,6 @@ public class GameController {
                                     System.out.println("La máquina dice UNO a tiempo.");
                                 }
 
-                                if (!cpuDijoUNO) {
-                                    Platform.runLater(() -> {
-                                        manoCPU.addAll(baraja.robarVarias(2));
-                                        System.out.println("¡La máquina no dijo UNO! Roba 2 cartas.");
-                                        mostrarCartasMaquina();
-                                    });
-                                }
-
                             } catch (InterruptedException ex) {
                                 ex.printStackTrace();
                             }
@@ -206,17 +199,17 @@ public class GameController {
                 }
             }
 
+            // Si no tiene carta valida, roba una
             Carta robada = baraja.robarCarta();
             if (robada != null) {
                 manoCPU.add(robada);
-                mostrarCartasMaquina();
-                System.out.println("La máquina no tiene carta válida, roba una de la baraja.");
+                System.out.println("La maquina no tiene carta valida, roba una de la baraja");
             }
 
             turnoLabel.setText("Turno: Jugador");
             turnoHumano = true;
+            mostrarCartasMaquina();
         });
-
         pausa.play();
     }
 
@@ -245,6 +238,13 @@ public class GameController {
         if (manoHumano.size() == 1 && !unoPresionado) {
             unoPresionado = true;
             System.out.println("¡UNO presionado a tiempo!");
+        }
+
+        if (manoCPU.size() == 1) {
+            // Si la CPU no dijo "UNO" a tiempo
+            manoCPU.addAll(baraja.robarVarias(1));
+            mostrarCartasMaquina();
+            System.out.println("¡La CPU no dijo UNO a tiempo! Roba 1 carta.");
         }
     }
 }
