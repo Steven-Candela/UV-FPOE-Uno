@@ -28,6 +28,9 @@ public class GameController {
     private HBox manoJugador;
 
     @FXML
+    private HBox manoMaquina;
+
+    @FXML
     private ImageView cartaCentro;
 
     @FXML
@@ -47,6 +50,8 @@ public class GameController {
 
         // Mostrar mano del jugador humano
         mostrarCartasJugador();
+        // Mostrar mano de la máquina
+        mostrarCartasMaquina();
     }
 
     private void mostrarCartaCentral(Carta carta) {
@@ -75,6 +80,18 @@ public class GameController {
             });
 
             manoJugador.getChildren().add(imgView);
+        }
+    }
+
+    private void mostrarCartasMaquina() {
+        manoMaquina.getChildren().clear();
+
+        for (int i = 0; i < manoCPU.size(); i++) {
+            Image img = new Image(getClass().getResourceAsStream("/com/uno/imagenes/card_uno.png")); // reverso
+            ImageView imgView = new ImageView(img);
+            imgView.setFitWidth(80);
+            imgView.setFitHeight(120);
+            manoMaquina.getChildren().add(imgView);
         }
     }
 
@@ -130,6 +147,7 @@ public class GameController {
                     System.out.println("La maquina juega: " + carta);
                     mostrarCartaCentral(carta);
                     manoCPU.remove(carta);
+                    mostrarCartasMaquina();
 
                     turnoLabel.setText("Turno: Jugador");
                     turnoHumano = true;
