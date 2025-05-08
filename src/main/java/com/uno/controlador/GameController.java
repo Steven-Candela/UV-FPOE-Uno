@@ -159,6 +159,7 @@ public class GameController {
             Carta robada = baraja.robarCarta();
             if (robada != null) {
                 manoCPU.add(robada);
+                mostrarCartasMaquina();
                 System.out.println("La maquina no tiene carta valida, tons roba una de la baraja");
             }
 
@@ -170,7 +171,18 @@ public class GameController {
 
     @FXML
     private void onActionPasarTurnoButton(ActionEvent event) {
-        System.out.println("Botón 'Pasar Turno' presionado.");
+        // Roba una carta
+        Carta cartaRobada = baraja.robarCarta();
+        if (cartaRobada != null) {
+            manoHumano.add(cartaRobada);
+            mostrarCartasJugador();
+        } else {
+            System.out.println("No hay cartas para robar");
+        }
+
+        // Cambia el turno
+        turnoHumano = false;
+        jugarTurnoCPU();
     }
 
     @FXML
