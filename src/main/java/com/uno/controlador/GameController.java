@@ -2,6 +2,7 @@ package com.uno.controlador;
 
 import com.uno.modelo.Baraja;
 import com.uno.modelo.Carta;
+import com.uno.modelo.CartaEspecial;
 import com.uno.modelo.CartaInvalidaException;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
@@ -248,5 +249,55 @@ public class GameController {
             mostrarCartasMaquina();
             System.out.println("¡La CPU no dijo UNO a tiempo! Roba 1 carta.");
         }
+    }
+
+    private String EspecialJugada(CartaEspecial cartaEspecial, boolean TurnoesHumano, String color) {
+        String habilidad = cartaEspecial.getHabilidad();
+        if (habilidad.equals("skip")){
+            if (TurnoesHumano) {
+                System.out.println("El jugador ha usado una carta de skip");
+                System.out.println("La maquina pierde su turno");
+                TurnoesHumano = true;
+            } else {
+                System.out.println("La maquina ha usado una carta de skip");
+                System.out.println("El jugador pierde su turno");
+                TurnoesHumano = false;
+            }
+        }
+        if (habilidad.equals("+2")){
+            if (TurnoesHumano) {
+                for (int i = 0; i < 2; i++){
+                    Carta robada = baraja.robarCarta();
+                    manoHumano.add(robada);
+                }
+            } else {
+                for (int i = 0; i < 2; i++) {
+                    Carta robada = baraja.robarCarta();
+                    manoCPU.add(robada);
+                }
+            }
+        }
+        if (habilidad.equals("+4")) {
+            if (TurnoesHumano) {
+                for (int i = 0; i < 4; i++) {
+                    Carta robada = baraja.robarCarta();
+                    manoHumano.add(robada);
+                }
+
+            } else {
+                for (int i = 0; i < 4; i++) {
+                    Carta robada = baraja.robarCarta();
+                    manoCPU.add(robada);
+                }
+                System.out.println("La maquina está eligiendo un color...");
+                String[] colores = {"blue", "red", "green", "yellow"};
+                Random rand = new Random();
+                int indice = rand.nextInt(colores.length);
+                String colorElegido = colores[indice];
+                System.out.println("Color elegido: " + colorElegido);
+                color = colorElegido;
+            }
+        }
+        return color;
     }
 }

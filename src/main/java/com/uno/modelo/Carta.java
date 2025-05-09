@@ -12,6 +12,7 @@ public class Carta {
         this.imagen = valor + "_" + color + ".png";
     }
 
+    public String getHabilidad(){return "No hay habilidad";}
     public String getColor() {
         return color;
     }
@@ -30,5 +31,9 @@ public class Carta {
     @Override
     public String toString() {
         return valor + " de " + color;
+    }
+
+    public boolean EsEspecial() {
+        return false;
     }
 }
