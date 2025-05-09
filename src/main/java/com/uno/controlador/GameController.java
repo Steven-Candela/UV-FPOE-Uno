@@ -27,6 +27,7 @@ public class GameController {
     private boolean turnoHumano = true;
     private boolean unoPresionado = false;
     private boolean cpuDijoUNO = false;
+    private boolean turnoCambio = false;
 
     @FXML
     private HBox manoJugador;
@@ -109,10 +110,15 @@ public class GameController {
         if (cartaSeleccionada != null) {
             // Jugar la carta
             try {
+
                 validarCarta(cartaSeleccionada);
                 mostrarCartaCentral(cartaSeleccionada);
+                if(cartaSeleccionada.EsEspecial()){
+                   cartaSeleccionada.setColor(EspecialJugada(cartaSeleccionada, turnoHumano, cartaSeleccionada.getColor()));
+                }
                 manoHumano.remove(cartaSeleccionada);
                 cartaSeleccionada = null;
+                mostrarCartasMaquina();
                 mostrarCartasJugador();
                 System.out.println("Carta jugada con éxito.");
 
@@ -132,14 +138,17 @@ public class GameController {
                                     System.out.println("¡No dijiste UNO a tiempo! Robas 1 carta.");
                                 });
                             }
+
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }).start();
                 }
-
-                turnoHumano = false;
-                jugarTurnoCPU();
+                if (!turnoCambio) {
+                    turnoHumano = false;
+                    jugarTurnoCPU();
+                }
+                turnoCambio = false;
             } catch (CartaInvalidaException e) {
                 System.out.println(e.getMessage());
             }
@@ -174,8 +183,13 @@ public class GameController {
 
                     System.out.println("La maquina juega: " + carta);
                     mostrarCartaCentral(carta);
+                    cartaSeleccionada = carta;
+                    if(cartaSeleccionada.EsEspecial()){
+                        cartaSeleccionada.setColor(EspecialJugada(cartaSeleccionada, turnoHumano, cartaSeleccionada.getColor()));
+                    }
                     manoCPU.remove(carta);
                     mostrarCartasMaquina();
+                    mostrarCartasJugador();
 
                     if (manoCPU.size() == 1) {
                         cpuDijoUNO = false;
@@ -195,9 +209,13 @@ public class GameController {
                             }
                         }).start();
                     }
-
-                    turnoLabel.setText("Turno: Jugador");
-                    turnoHumano = true;
+                    if (!turnoCambio){
+                        turnoLabel.setText("Turno: Jugador");
+                        turnoHumano = true;
+                    } else {
+                        turnoCambio = false;
+                        jugarTurnoCPU();
+                    }
                     return;
                 }
             }
@@ -251,53 +269,74 @@ public class GameController {
         }
     }
 
-    private String EspecialJugada(CartaEspecial cartaEspecial, boolean TurnoesHumano, String color) {
+    private String EspecialJugada(Carta cartaEspecial, boolean TurnoesHumano, String color) {
+        String[] colores = {"blue", "red", "green", "yellow"};
         String habilidad = cartaEspecial.getHabilidad();
         if (habilidad.equals("skip")){
             if (TurnoesHumano) {
                 System.out.println("El jugador ha usado una carta de skip");
                 System.out.println("La maquina pierde su turno");
-                TurnoesHumano = true;
+                turnoHumano = true;
+                turnoCambio = true;
             } else {
                 System.out.println("La maquina ha usado una carta de skip");
                 System.out.println("El jugador pierde su turno");
-                TurnoesHumano = false;
+                turnoHumano = false;
+                turnoCambio = true;
             }
         }
         if (habilidad.equals("+2")){
-            if (TurnoesHumano) {
+            if (!TurnoesHumano) {
                 for (int i = 0; i < 2; i++){
                     Carta robada = baraja.robarCarta();
                     manoHumano.add(robada);
                 }
+                System.out.println("La maquina jugó un +2, el jugador roba 2 cartas");
+
             } else {
                 for (int i = 0; i < 2; i++) {
                     Carta robada = baraja.robarCarta();
                     manoCPU.add(robada);
                 }
+                System.out.println("La jugador jugó un +2, la maquina roba 2 cartas");
             }
         }
         if (habilidad.equals("+4")) {
-            if (TurnoesHumano) {
+            if (!TurnoesHumano) {
                 for (int i = 0; i < 4; i++) {
                     Carta robada = baraja.robarCarta();
                     manoHumano.add(robada);
                 }
-
-            } else {
-                for (int i = 0; i < 4; i++) {
-                    Carta robada = baraja.robarCarta();
-                    manoCPU.add(robada);
-                }
+                System.out.println("La maquina jugó un +4, el jugador roba 4 cartas");
                 System.out.println("La maquina está eligiendo un color...");
-                String[] colores = {"blue", "red", "green", "yellow"};
                 Random rand = new Random();
                 int indice = rand.nextInt(colores.length);
                 String colorElegido = colores[indice];
                 System.out.println("Color elegido: " + colorElegido);
                 color = colorElegido;
+            } else {
+                for (int i = 0; i < 4; i++) {
+                    Carta robada = baraja.robarCarta();
+                    manoCPU.add(robada);
+                    //Elegir color manualmente (Jugador)
+                }
+                System.out.println("El jugador jugó un +4, la maquina roba 4 cartas");
             }
         }
+
+        if (habilidad.equals("SelectColor")) {
+            if(!TurnoesHumano) {
+                System.out.println("La maquina está eligiendo un color...");
+                Random rand = new Random();
+                int indice = rand.nextInt(colores.length);
+                String colorElegido = colores[indice];
+                System.out.println("Color elegido: " + colorElegido);
+                color = colorElegido;
+            } else {
+                System.out.println("el humano elije un color...");
+            }
+        }
+        System.out.println(color);
         return color;
     }
 }
