@@ -36,8 +36,12 @@ public class Baraja {
             Carta UltimaCarta = cartas.get(cartas.size() - 1);
             UltimaCarta.setImagen("4_wild_draw.png");
         }
-        CartaEspecial wild = new CartaEspecial("All", "SelectColor");
-        wild.setImagen("wild.png");
+
+        for (int i = 0; i < 4; i++) {
+            cartas.add(new CartaEspecial("All", "SelectColor"));
+            Carta UltimaCarta = cartas.get(cartas.size() - 1);
+            UltimaCarta.setImagen("wild.png");
+        }
     }
 
     private void mezclar() {

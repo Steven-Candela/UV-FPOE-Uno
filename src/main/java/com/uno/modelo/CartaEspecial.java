@@ -10,12 +10,15 @@ public class CartaEspecial extends Carta{
         super.setImagen(habilidad + "_" + color + ".png");
     }
 
-    public void skipHabilidad(String turno) {
-
-    }
-
+    //getters
+    @Override
     public String getHabilidad() {return habilidad;}
 
+    //
     @Override
     public String toString() {return habilidad + " de " + getColor();}
+
+    @Override
+    public boolean EsEspecial() {return true;}
+
 }
