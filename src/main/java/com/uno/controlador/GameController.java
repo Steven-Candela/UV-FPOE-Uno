@@ -45,7 +45,7 @@ public class GameController {
 
         // Repartir cartas
         manoHumano = baraja.robarVarias(5);
-        manoCPU = baraja.robarVarias(5);
+        manoCPU = baraja.robarVarias(2);
 
         // Carta inicial al centro
         Carta cartaInicial = baraja.robarCarta();
@@ -184,7 +184,7 @@ public class GameController {
                                 int delay = 500 + random.nextInt(3000);
                                 Thread.sleep(delay);
 
-                                if (random.nextBoolean()) {
+                                if (!unoPresionado) {
                                     cpuDijoUNO = true;
                                     System.out.println("La máquina dice UNO a tiempo.");
                                 }
@@ -237,12 +237,12 @@ public class GameController {
 
     @FXML
     private void onActionUnoButton(ActionEvent event) {
-        if (manoHumano.size() == 1 && !unoPresionado) {
-            unoPresionado = true;
+        unoPresionado = true;
+        if (manoHumano.size() == 1) {
             System.out.println("¡UNO presionado a tiempo!");
         }
 
-        if (manoCPU.size() == 1) {
+        if (manoCPU.size() == 1 && !cpuDijoUNO) {
             // Si la CPU no dijo "UNO" a tiempo
             manoCPU.addAll(baraja.robarVarias(1));
             mostrarCartasMaquina();
