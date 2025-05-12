@@ -28,6 +28,7 @@ public class GameController {
     private boolean unoPresionado = false;
     private boolean cpuDijoUNO = false;
     private boolean turnoCambio = false;
+    private boolean maquinaPenalizada = false;
 
     @FXML
     private HBox manoJugador;
@@ -125,14 +126,18 @@ public class GameController {
                 if (manoHumano.size() == 1) {
                     unoPresionado = false;
 
-                    // Iniciar el temporizador de castigo en un hilo
                     new Thread(() -> {
                         try {
-                            int tiempo = 2000 + new Random().nextInt(2000);
-                            Thread.sleep(tiempo);
+                            // El hilo duerme por 2 segundos
+                            Thread.sleep(2000);
+
+                            // Espera entre 0 y 2 segundos más
+                            int extraDelay = new Random().nextInt(2000);
+                            Thread.sleep(extraDelay);
+
+                            // Revisar si presionó UNO en ese lapso
                             if (!unoPresionado) {
                                 Platform.runLater(() -> {
-                                    // Castigar al jugador: robar 1 carta
                                     manoHumano.addAll(baraja.robarVarias(1));
                                     mostrarCartasJugador();
                                     System.out.println("¡No dijiste UNO a tiempo! Robas 1 carta.");
@@ -196,14 +201,11 @@ public class GameController {
 
                         new Thread(() -> {
                             try {
-                                int delay = 500 + random.nextInt(3000);
-                                Thread.sleep(delay);
-
-                                if (!unoPresionado) {
+                                Thread.sleep(2000 + new Random().nextInt(2000)); // 2 a 4 segundos
+                                if (!cpuDijoUNO) {
                                     cpuDijoUNO = true;
-                                    System.out.println("La máquina dice UNO a tiempo.");
+                                    Platform.runLater(() -> System.out.println("La máquina dice UNO a tiempo"));
                                 }
-
                             } catch (InterruptedException ex) {
                                 ex.printStackTrace();
                             }
@@ -219,14 +221,12 @@ public class GameController {
                     return;
                 }
             }
-
             // Si no tiene carta valida, roba una
             Carta robada = baraja.robarCarta();
             if (robada != null) {
                 manoCPU.add(robada);
                 System.out.println("La maquina no tiene carta valida, roba una de la baraja");
             }
-
             turnoLabel.setText("Turno: Jugador");
             turnoHumano = true;
             mostrarCartasMaquina();
@@ -256,18 +256,18 @@ public class GameController {
 
     @FXML
     private void onActionUnoButton(ActionEvent event) {
-        unoPresionado = true;
         if (manoHumano.size() == 1) {
+            unoPresionado = true;
             System.out.println("¡UNO presionado a tiempo!");
         }
-
         if (manoCPU.size() == 1 && !cpuDijoUNO) {
-            // Si la CPU no dijo "UNO" a tiempo
             manoCPU.addAll(baraja.robarVarias(1));
+            cpuDijoUNO = true;
             mostrarCartasMaquina();
-            System.out.println("¡La CPU no dijo UNO a tiempo! Roba 1 carta.");
+            System.out.println("¡El jugador fue más rápido que la máquina! La máquina roba 1 carta.");
         }
     }
+
 
     private String EspecialJugada(Carta cartaEspecial, boolean TurnoesHumano, String color) {
         String[] colores = {"blue", "red", "green", "yellow"};
