@@ -30,7 +30,6 @@ public class GameController {
     private boolean unoPresionado = false;
     private boolean cpuDijoUNO = false;
     private boolean turnoCambio = false;
-    private boolean maquinaPenalizada = false;
 
     @FXML private HBox manoJugador;
 
@@ -41,6 +40,8 @@ public class GameController {
     @FXML private Label turnoLabel;
 
     @FXML private StackPane selecionaColorPane;
+
+    @FXML private Button unoButton;
 
     @FXML private Button rojoButton;
     @FXML private Button azulButton;
@@ -90,9 +91,9 @@ public class GameController {
                 cartaSeleccionada = carta;
                 System.out.println("Carta seleccionada: " + cartaSeleccionada);
             });
-
             manoJugador.getChildren().add(imgView);
         }
+        unoButton.setDisable(manoHumano.size() != 1);
     }
 
     private void mostrarCartasMaquina() {
@@ -117,7 +118,6 @@ public class GameController {
         if (cartaSeleccionada != null) {
             // Jugar la carta
             try {
-
                 validarCarta(cartaSeleccionada);
                 mostrarCartaCentral(cartaSeleccionada);
                 if(cartaSeleccionada.EsEspecial()){
@@ -208,6 +208,7 @@ public class GameController {
                     mostrarCartasJugador();
 
                     if (manoCPU.size() == 1) {
+                        unoButton.setDisable(false);
                         cpuDijoUNO = false;
 
                         new Thread(() -> {
@@ -245,10 +246,25 @@ public class GameController {
         pausa.play();
     }
 
+    private boolean tieneCartaValida(List<Carta> mano) {
+        for (Carta carta : mano) {
+            try {
+                validarCarta(carta);
+                return true;
+            } catch (CartaInvalidaException e) {
+            }
+        }
+        return false;
+    }
+
+
     @FXML
     private void onActionPasarTurnoButton(ActionEvent event) {
-        // Roba una carta
-        if(turnoHumano){
+        if (turnoHumano) {
+            if (tieneCartaValida(manoHumano)) {
+                System.out.println("Tienes cartas jugables. No puedes pasar turno ni robar.");
+                return;
+            }
             Carta cartaRobada = baraja.robarCarta();
             if (cartaRobada != null) {
                 manoHumano.add(cartaRobada);
@@ -259,10 +275,9 @@ public class GameController {
             // Cambia el turno
             turnoHumano = false;
             jugarTurnoCPU();
-        } else{
+        } else {
             System.out.println("No puedes robar cartas mientras no es tu turno");
         }
-
     }
 
     @FXML
