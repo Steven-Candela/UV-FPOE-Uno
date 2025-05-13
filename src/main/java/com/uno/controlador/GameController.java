@@ -43,6 +43,8 @@ public class GameController {
 
     @FXML private Button unoButton;
 
+    @FXML private Label unoVisualLabel;
+
     @FXML private Button rojoButton;
     @FXML private Button azulButton;
     @FXML private Button amarilloButton;
@@ -55,7 +57,7 @@ public class GameController {
 
         // Repartir cartas
         manoHumano = baraja.robarVarias(5);
-        manoCPU = baraja.robarVarias(5);
+        manoCPU = baraja.robarVarias(2);
 
         // Carta inicial al centro
         Carta cartaInicial = baraja.robarCarta();
@@ -106,6 +108,14 @@ public class GameController {
             imgView.setFitHeight(120);
             manoMaquina.getChildren().add(imgView);
         }
+    }
+
+    private void mostrarUnoVisual() {
+        unoVisualLabel.setVisible(true);
+        unoVisualLabel.setOpacity(1.0);
+        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+        pause.setOnFinished(event -> unoVisualLabel.setVisible(false));
+        pause.play();
     }
 
     @FXML
@@ -217,6 +227,7 @@ public class GameController {
                                 if (!cpuDijoUNO) {
                                     cpuDijoUNO = true;
                                     Platform.runLater(() -> System.out.println("La máquina dice UNO a tiempo"));
+                                    mostrarUnoVisual();
                                 }
                             } catch (InterruptedException ex) {
                                 ex.printStackTrace();
@@ -285,12 +296,14 @@ public class GameController {
         if (manoHumano.size() == 1) {
             unoPresionado = true;
             System.out.println("¡UNO presionado a tiempo!");
+            mostrarUnoVisual();
         }
         if (manoCPU.size() == 1 && !cpuDijoUNO) {
             manoCPU.addAll(baraja.robarVarias(1));
             cpuDijoUNO = true;
             mostrarCartasMaquina();
             System.out.println("¡El jugador fue más rápido que la máquina! La máquina roba 1 carta.");
+            mostrarUnoVisual();
         }
     }
 
