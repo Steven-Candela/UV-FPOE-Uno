@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -10,34 +11,92 @@
    <top>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0">
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
                   <Label text="UNO">
                      <font>
                         <Font name="Century" size="20.0" />
                      </font>
                   </Label>
+                  <Label fx:id="turnoLabel" text="Turno: Jugador">
+                     <font>
+                        <Font name="Gabriola" size="20.0" />
+                     </font>
+                  </Label>
                </children>
-            </HBox>
+            </VBox>
             <HBox fx:id="manoMaquina" alignment="CENTER" prefHeight="100.0" spacing="10.0" />
          </children>
       </VBox>
    </top>
 
    <center>
-      <HBox alignment="CENTER" prefHeight="150.0" spacing="20.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="150.0" spacing="20.0" translateX="40.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" translateX="-20.0">
                <image>
                   <Image url="@imagenes/card_uno.png" />
                </image>
             </ImageView>
             <ImageView fx:id="cartaCentro" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-            <Label fx:id="turnoLabel" text="Turno: Jugador">
-               <font>
-                  <Font name="Gabriola" size="20.0" />
-               </font>
-            </Label>
+            <StackPane fx:id="selecionaColorPane" prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="163.0" fitWidth="135.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@imagenes/select_color_background.png" />
+                     </image>
+                  </ImageView>
+                  <Label alignment="CENTER" contentDisplay="CENTER" text="¡Selecciona&#10;un color!" textAlignment="CENTER" textFill="#3c3c3c" translateY="-58.0">
+                     <font>
+                        <Font name="Century Gothic Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="rojoButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onSeleccionColor" prefHeight="45.0" prefWidth="45.0" style="-fx-background-color: none;" translateX="-25.0" translateY="-6.0">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imagenes/select_color_red.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
+                  <Button fx:id="azulButton" layoutX="84.0" layoutY="94.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onSeleccionColor" prefHeight="45.0" prefWidth="45.0" style="-fx-background-color: none;" translateX="25.0" translateY="-6.0">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imagenes/select_color_blue.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
+                  <Button fx:id="amarilloButton" layoutX="84.0" layoutY="94.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onSeleccionColor" prefHeight="45.0" prefWidth="45.0" style="-fx-background-color: none;" translateX="-25.0" translateY="42.0">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imagenes/select_color_yellow.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
+                  <Button contentDisplay="CENTER" graphicTextGap="1.0" layoutX="80.0" layoutY="80.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" style="-fx-background-color: none;" translateX="25.0" translateY="42.0">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@imagenes/select_color_green.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
+               </children>
+            </StackPane>
          </children>
       </HBox>
    </center>
@@ -70,13 +129,5 @@
          </children>
       </VBox>
    </bottom>
-
-   <right>
-      <VBox alignment="CENTER" prefHeight="193.0" prefWidth="117.0" BorderPane.alignment="CENTER" />
-   </right>
-
-   <left>
-      <VBox prefHeight="193.0" prefWidth="117.0" BorderPane.alignment="CENTER" />
-   </left>
 
 </BorderPane>

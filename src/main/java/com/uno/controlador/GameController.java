@@ -7,11 +7,13 @@ import com.uno.modelo.CartaInvalidaException;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.event.ActionEvent;
+import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 import java.util.List;
@@ -30,20 +32,24 @@ public class GameController {
     private boolean turnoCambio = false;
     private boolean maquinaPenalizada = false;
 
-    @FXML
-    private HBox manoJugador;
+    @FXML private HBox manoJugador;
 
-    @FXML
-    private HBox manoMaquina;
+    @FXML private HBox manoMaquina;
 
-    @FXML
-    private ImageView cartaCentro;
+    @FXML private ImageView cartaCentro;
 
-    @FXML
-    private Label turnoLabel;
+    @FXML private Label turnoLabel;
+
+    @FXML private StackPane selecionaColorPane;
+
+    @FXML private Button rojoButton;
+    @FXML private Button azulButton;
+    @FXML private Button amarilloButton;
+    @FXML private Button verdeButton;
 
     @FXML
     private void initialize() {
+        selecionaColorPane.setVisible(false);
         baraja = new Baraja();
 
         // Repartir cartas
@@ -118,6 +124,11 @@ public class GameController {
                    cartaSeleccionada.setColor(EspecialJugada(cartaSeleccionada, turnoHumano, cartaSeleccionada.getColor()));
                 }
                 manoHumano.remove(cartaSeleccionada);
+
+                if (cartaSeleccionada.getColor().equals("All")) {
+                    selecionaColorPane.setVisible(true);
+                }
+
                 cartaSeleccionada = null;
                 mostrarCartasMaquina();
                 mostrarCartasJugador();
@@ -352,5 +363,28 @@ public class GameController {
         }
         System.out.println(color);
         return color;
+    }
+
+    @FXML
+    private void onSeleccionColor (ActionEvent event) {
+        Button botonColor = (Button) event.getSource();
+        String id = botonColor.getId();
+
+        switch (id) {
+            case "rojoButton":
+                cartaCentroActual.setColor("red");
+                break;
+            case "azulButton":
+                cartaCentroActual.setColor("blue");
+                break;
+            case "amarilloButton":
+                cartaCentroActual.setColor("yellow");
+                break;
+            case "verdeButton":
+                cartaCentroActual.setColor("green");
+                break;
+        }
+        selecionaColorPane.setVisible(false);
+        System.out.println("El jugador selecciono el color " + cartaCentroActual.getColor());
     }
 }
