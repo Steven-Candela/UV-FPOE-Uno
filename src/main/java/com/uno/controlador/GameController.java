@@ -48,7 +48,7 @@ public class GameController {
 
         // Repartir cartas
         manoHumano = baraja.robarVarias(5);
-        manoCPU = baraja.robarVarias(2);
+        manoCPU = baraja.robarVarias(5);
 
         // Carta inicial al centro
         Carta cartaInicial = baraja.robarCarta();
@@ -292,6 +292,9 @@ public class GameController {
                     manoHumano.add(robada);
                 }
                 System.out.println("La maquina jugó un +2, el jugador roba 2 cartas");
+                System.out.println("El jugador pierde su turno");
+                turnoHumano = false;
+                turnoCambio = true;
 
             } else {
                 for (int i = 0; i < 2; i++) {
@@ -299,6 +302,9 @@ public class GameController {
                     manoCPU.add(robada);
                 }
                 System.out.println("La jugador jugó un +2, la maquina roba 2 cartas");
+                System.out.println("La maquina pierde su turno");
+                turnoHumano = true;
+                turnoCambio = true;
             }
         }
         if (habilidad.equals("+4")) {
@@ -314,13 +320,21 @@ public class GameController {
                 String colorElegido = colores[indice];
                 System.out.println("Color elegido: " + colorElegido);
                 color = colorElegido;
+                System.out.println("El jugador pierde su turno");
+                turnoHumano = false;
+                turnoCambio = true;
+
             } else {
                 for (int i = 0; i < 4; i++) {
                     Carta robada = baraja.robarCarta();
                     manoCPU.add(robada);
-                    //Elegir color manualmente (Jugador)
                 }
+                //Elegir color manualmente (Jugador)
+
                 System.out.println("El jugador jugó un +4, la maquina roba 4 cartas");
+                System.out.println("La maquina pierde su turno");
+                turnoHumano = true;
+                turnoCambio = true;
             }
         }
 
