@@ -45,6 +45,10 @@ public class GameController {
 
     @FXML private Label unoVisualLabel;
 
+    @FXML private Button jugarCartaButton;
+
+    @FXML private Button pasarTurnoButton;
+
     @FXML private Button rojoButton;
     @FXML private Button azulButton;
     @FXML private Button amarilloButton;
@@ -134,9 +138,16 @@ public class GameController {
                    cartaSeleccionada.setColor(EspecialJugada(cartaSeleccionada, turnoHumano, cartaSeleccionada.getColor()));
                 }
                 manoHumano.remove(cartaSeleccionada);
+                mostrarCartasJugador();
+
+                if (manoHumano.isEmpty()) {
+                    finalizarJuego("¡El jugador humano ha ganado!");
+                    return;
+                }
 
                 if (cartaSeleccionada.getColor().equals("All")) {
                     selecionaColorPane.setVisible(true);
+                    return; // Espera que el jugador elija un color
                 }
 
                 cartaSeleccionada = null;
@@ -212,10 +223,16 @@ public class GameController {
                     cartaSeleccionada = carta;
                     if(cartaSeleccionada.EsEspecial()){
                         cartaSeleccionada.setColor(EspecialJugada(cartaSeleccionada, turnoHumano, cartaSeleccionada.getColor()));
+                        cartaCentroActual.setColor(cartaSeleccionada.getColor());
                     }
                     manoCPU.remove(carta);
                     mostrarCartasMaquina();
                     mostrarCartasJugador();
+
+                    if (manoCPU.isEmpty()) {
+                        finalizarJuego("¡La máquina ha ganado!");
+                        return;
+                    }
 
                     if (manoCPU.size() == 1) {
                         unoButton.setDisable(false);
@@ -414,5 +431,25 @@ public class GameController {
         }
         selecionaColorPane.setVisible(false);
         System.out.println("El jugador selecciono el color " + cartaCentroActual.getColor());
+
+        turnoHumano = false;
+        jugarTurnoCPU();
+    }
+
+    private void finalizarJuego(String mensaje) {
+        turnoLabel.setText(mensaje);
+
+        // Desactivar botones
+        unoButton.setDisable(true);
+        jugarCartaButton.setDisable(true);
+        pasarTurnoButton.setDisable(true);
+
+        //Se desactivan las cartas del jugador
+        for (javafx.scene.Node node : manoJugador.getChildren()) {
+            node.setDisable(true);
+        }
+
+        // Se oculta el panel de selección de color (por si estaba abierto)
+        selecionaColorPane.setVisible(false);
     }
 }

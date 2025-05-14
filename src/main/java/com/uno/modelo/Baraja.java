@@ -25,10 +25,11 @@ public class Baraja {
             cartas.add(new CartaEspecial(color, "skip"));
         }
         for (String color : colores) {
-            cartas.add(new CartaEspecial(color, "+2"));
-            Carta UltimaCarta = cartas.get(cartas.size() - 1);
-            UltimaCarta.setImagen("2_wild_draw_" + color + ".png");
-
+            for (int i = 0; i < 2; i++) {
+                CartaEspecial masDos = new CartaEspecial(color, "+2");
+                masDos.setImagen("2_wild_draw_" + color + ".png");
+                cartas.add(masDos);
+            }
         }
 
         for (int i = 0; i < 4; i++ ) {

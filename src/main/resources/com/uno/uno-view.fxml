@@ -122,7 +122,7 @@
                         <Font name="Book Antiqua" size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="pasarTurnoButtom" onAction="#onActionPasarTurnoButton" text="Pasar Turno">
+                  <Button fx:id="pasarTurnoButton" onAction="#onActionPasarTurnoButton" text="Pasar Turno">
                      <font>
                         <Font name="Book Antiqua" size="18.0" />
                      </font>
