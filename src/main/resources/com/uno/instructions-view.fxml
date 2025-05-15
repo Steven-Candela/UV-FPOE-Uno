@@ -17,7 +17,7 @@
             <Font name="Georgia" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="volverAlMenuButton" layoutX="155.0" layoutY="400.0" mnemonicParsing="false" onAction="#onActionVolverAlMenuButton" text="Volver al Menú">
+      <Button fx:id="VolverAlMenuButton" layoutX="155.0" layoutY="400.0" mnemonicParsing="false" onAction="#onActionVolverAlMenuButton" text="Volver al Menú">
          <font>
             <Font name="Bookman Old Style" size="14.0" />
          </font>

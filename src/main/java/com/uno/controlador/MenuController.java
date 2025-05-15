@@ -16,14 +16,19 @@ public class MenuController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/uno/uno-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setTitle("Juego");
         stage.setScene(scene);
         stage.show();
     }
 
     @FXML
     private void onActionCreditosButton(ActionEvent event) throws IOException {
-        // Aquí puedes mostrar una vista de créditos si tienes una, o mostrar un popup.
-        System.out.println("Créditos aún no implementado.");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/uno/credits-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setTitle("Créditos");
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
@@ -36,6 +41,7 @@ public class MenuController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/uno/instructions-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setTitle("Instrucciones");
         stage.setScene(scene);
         stage.show();
     }
