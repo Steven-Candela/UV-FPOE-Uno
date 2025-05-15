@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -49,11 +50,6 @@ public class GameController {
 
     @FXML private Button pasarTurnoButton;
 
-    @FXML private Button rojoButton;
-    @FXML private Button azulButton;
-    @FXML private Button amarilloButton;
-    @FXML private Button verdeButton;
-
     @FXML
     private void initialize() {
         selecionaColorPane.setVisible(false);
@@ -61,7 +57,7 @@ public class GameController {
 
         // Repartir cartas
         manoHumano = baraja.robarVarias(5);
-        manoCPU = baraja.robarVarias(2);
+        manoCPU = baraja.robarVarias(5);
 
         // Carta inicial al centro
         Carta cartaInicial = baraja.robarCarta();
@@ -170,7 +166,8 @@ public class GameController {
                             // Revisar si presionó UNO en ese lapso
                             if (!unoPresionado) {
                                 Platform.runLater(() -> {
-                                    manoHumano.addAll(baraja.robarVarias(1));
+                                    List<Carta> cartasPenalizacion = intentarRobarCartas(1);
+                                    manoHumano.addAll(cartasPenalizacion);
                                     mostrarCartasJugador();
                                     System.out.println("¡No dijiste UNO a tiempo! Robas 1 carta.");
                                 });
@@ -262,11 +259,9 @@ public class GameController {
                 }
             }
             // Si no tiene carta valida, roba una
-            Carta robada = baraja.robarCarta();
-            if (robada != null) {
-                manoCPU.add(robada);
-                System.out.println("La maquina no tiene carta valida, roba una de la baraja");
-            }
+            List<Carta> robadasCPU = intentarRobarCartas(1);
+            manoCPU.addAll(robadasCPU);
+            System.out.println("La maquina no tiene carta valida, roba una de la baraja");
             turnoLabel.setText("Turno: Jugador");
             turnoHumano = true;
             mostrarCartasMaquina();
@@ -293,13 +288,9 @@ public class GameController {
                 System.out.println("Tienes cartas jugables. No puedes pasar turno ni robar.");
                 return;
             }
-            Carta cartaRobada = baraja.robarCarta();
-            if (cartaRobada != null) {
-                manoHumano.add(cartaRobada);
-                mostrarCartasJugador();
-            } else {
-                System.out.println("No hay cartas para robar");
-            }
+            List<Carta> cartasRobadas = intentarRobarCartas(1);
+            manoHumano.addAll(cartasRobadas);
+            mostrarCartasJugador();
             // Cambia el turno
             turnoHumano = false;
             jugarTurnoCPU();
@@ -316,7 +307,8 @@ public class GameController {
             mostrarUnoVisual();
         }
         if (manoCPU.size() == 1 && !cpuDijoUNO) {
-            manoCPU.addAll(baraja.robarVarias(1));
+            List<Carta> cartasPenalizacionMaquina = intentarRobarCartas(1);
+            manoCPU.addAll(cartasPenalizacionMaquina);
             cpuDijoUNO = true;
             mostrarCartasMaquina();
             System.out.println("¡El jugador fue más rápido que la máquina! La máquina roba 1 carta.");
@@ -343,20 +335,16 @@ public class GameController {
         }
         if (habilidad.equals("+2")){
             if (!TurnoesHumano) {
-                for (int i = 0; i < 2; i++){
-                    Carta robada = baraja.robarCarta();
-                    manoHumano.add(robada);
-                }
+                List<Carta> robadasHumano = intentarRobarCartas(2);
+                manoHumano.addAll(robadasHumano);
                 System.out.println("La maquina jugó un +2, el jugador roba 2 cartas");
                 System.out.println("El jugador pierde su turno");
                 turnoHumano = false;
                 turnoCambio = true;
 
             } else {
-                for (int i = 0; i < 2; i++) {
-                    Carta robada = baraja.robarCarta();
-                    manoCPU.add(robada);
-                }
+                List<Carta> robadasMaquina = intentarRobarCartas(2);
+                manoCPU.addAll(robadasMaquina);
                 System.out.println("La jugador jugó un +2, la maquina roba 2 cartas");
                 System.out.println("La maquina pierde su turno");
                 turnoHumano = true;
@@ -365,10 +353,8 @@ public class GameController {
         }
         if (habilidad.equals("+4")) {
             if (!TurnoesHumano) {
-                for (int i = 0; i < 4; i++) {
-                    Carta robada = baraja.robarCarta();
-                    manoHumano.add(robada);
-                }
+                List<Carta> robadasHumano = intentarRobarCartas(4);
+                manoHumano.addAll(robadasHumano);
                 System.out.println("La maquina jugó un +4, el jugador roba 4 cartas");
                 System.out.println("La maquina está eligiendo un color...");
                 Random rand = new Random();
@@ -381,10 +367,8 @@ public class GameController {
                 turnoCambio = true;
 
             } else {
-                for (int i = 0; i < 4; i++) {
-                    Carta robada = baraja.robarCarta();
-                    manoCPU.add(robada);
-                }
+                List<Carta> robadasMaquina = intentarRobarCartas(2);
+                manoCPU.addAll(robadasMaquina);
                 //Elegir color manualmente (Jugador)
 
                 System.out.println("El jugador jugó un +4, la maquina roba 4 cartas");
@@ -434,6 +418,29 @@ public class GameController {
 
         turnoHumano = false;
         jugarTurnoCPU();
+    }
+
+    private List<Carta> intentarRobarCartas(int cantidad) {
+        if (cantidad <= 0) {
+            return new ArrayList<>();
+        }
+
+        List<Carta> cartasRobadas = new ArrayList<>();
+        boolean seNecesitaReinciar = false;
+
+        for (int i = 0; i < cantidad; i++) {
+            if (baraja.tamaño() == 0) {
+                if (!seNecesitaReinciar) {
+                    System.out.println("La baraja de robo está vacia");
+                    baraja.reiniciarCartas(manoHumano, manoCPU, cartaCentroActual);
+                    seNecesitaReinciar = true;
+                }
+                break;
+            }
+        }
+        Carta robada = baraja.robarCarta();
+        cartasRobadas.add(robada);
+        return cartasRobadas;
     }
 
     private void finalizarJuego(String mensaje) {

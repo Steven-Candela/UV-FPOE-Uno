@@ -50,18 +50,56 @@ public class Baraja {
     }
 
     public Carta robarCarta() {
-        if (!cartas.isEmpty()) {
-            return cartas.remove(0);
+        if (cartas.isEmpty()) {
+            return null;
+
         }
-        return null;
+        return cartas.remove(0);
     }
 
     public List<Carta> robarVarias(int cantidad) {
         List<Carta> mano = new ArrayList<>();
-        for (int i = 0; i < cantidad && !cartas.isEmpty(); i++) {
-            mano.add(robarCarta());
+        for (int i = 0; i < cantidad; i++) {
+            Carta cartaRobada = robarCarta();
+            if (cartaRobada != null) {
+                mano.add(cartaRobada);
+            } else {
+                break;
+            }
         }
         return mano;
+    }
+
+    public void reiniciarCartas(List<Carta> manoJugador, List<Carta> manoMaquina, Carta cartaCentro) {
+
+        System.out.println("Reiniciando cartas");
+
+        System.out.println("Mano Jugador: " + manoJugador);
+        System.out.println("Mano Maquina: " + manoMaquina);
+        System.out.println("Carta Centro: " + cartaCentro);
+
+        cartas = new ArrayList<>();
+        crearCartas();
+
+        System.out.println("Baraja sin modificaciones: " + cartas);
+
+        List<Carta> cartasEnJuegoEliminar = new ArrayList<>();
+        cartasEnJuegoEliminar.addAll(manoJugador);
+        cartasEnJuegoEliminar.addAll(manoMaquina);
+        cartasEnJuegoEliminar.add(cartaCentro);
+
+        System.out.println("Carta en Juego: " + cartasEnJuegoEliminar);
+
+        for (Carta cartaAEliminar : cartasEnJuegoEliminar) {
+            cartas.removeIf(carta ->
+                    carta.getValor() == cartaAEliminar.getValor() &&
+                            carta.getColor().equals(cartaAEliminar.getColor())
+            );
+        }
+
+        System.out.println("Baraja con modificaciones: " + cartas);
+        mezclar();
+
     }
 
     public int tamaño() {
