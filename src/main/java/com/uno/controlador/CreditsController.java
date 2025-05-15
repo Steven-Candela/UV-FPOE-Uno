@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class InstructionsController {
+public class CreditsController {
 
     @FXML
     private Button volverAlMenuButton;
@@ -24,5 +24,4 @@ public class InstructionsController {
         stage.setScene(scene);
         stage.show();
     }
-
 }
