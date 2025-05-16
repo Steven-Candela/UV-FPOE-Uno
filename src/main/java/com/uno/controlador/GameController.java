@@ -83,6 +83,9 @@ public class GameController {
             }
         }   else if (cartaInicial.getHabilidad().equals("SelectColor")) {
             selecionaColorPane.setVisible(true);
+        }   else if (cartaInicial.getHabilidad().equals("skip")) {
+            System.out.println("El jugador pierde su turno, la primera carta es un skip");
+            turnoHumano = false;
         }
 
         // Mostrar mano del jugador humano
