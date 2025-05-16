@@ -68,8 +68,8 @@ public class GameController {
         baraja = new Baraja();
 
         // Repartir cartas
-        manoHumano = baraja.robarVarias(5);
-        manoCPU = baraja.robarVarias(5);
+        manoHumano = baraja.robarVarias(10);
+        manoCPU = baraja.robarVarias(10);
 
         // Carta inicial al centro
         Carta cartaInicial;
@@ -518,10 +518,7 @@ public class GameController {
                 turnoHumano = true;
                 mensajeEstadoActual();
             } else {
-                System.out.println("el humano elije un color...");
-                turnoHumano = false;
-                mensajeEstadoActual();
-                jugarTurnoCPU();
+                System.out.println("el humano elige un color...");
             }
         }
         System.out.println(color);
@@ -559,6 +556,7 @@ public class GameController {
 
         if (cartaCentroActual.getHabilidad().equals("SelectColor") && turnoHumano == true) {
             turnoHumano = false;
+            mensajeEstadoActual();
             jugarTurnoCPU();
         } else {
             turnoHumano = true;
