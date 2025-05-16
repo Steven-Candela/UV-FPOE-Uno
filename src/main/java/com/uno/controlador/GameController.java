@@ -68,8 +68,8 @@ public class GameController {
         baraja = new Baraja();
 
         // Repartir cartas
-        manoHumano = baraja.robarVarias(10);
-        manoCPU = baraja.robarVarias(10);
+        manoHumano = baraja.robarVarias(5);
+        manoCPU = baraja.robarVarias(5);
 
         // Carta inicial al centro
         Carta cartaInicial;
