@@ -8,6 +8,12 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 import java.io.IOException;
 
+/**
+ * Controlador del menú principal del juego UNO.
+ * Maneja la navegación hacia las distintas vistas del juego: jugar, créditos, instrucciones y salir.
+ *
+ * @author Nicolle Paz
+ */
 public class MenuController {
 
     @FXML
