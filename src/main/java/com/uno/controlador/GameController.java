@@ -72,6 +72,18 @@ public class GameController {
         // Carta inicial al centro
         Carta cartaInicial = baraja.robarCarta();
         mostrarCartaCentral(cartaInicial);
+        if (cartaInicial.getHabilidad().equals("+2")) {
+            for (int i = 0; i < 2; i++) {
+                manoHumano.add(baraja.robarCarta());
+            }
+        } else if (cartaInicial.getHabilidad().equals("+4")) {
+            for (int i = 0; i < 4; i++) {
+                manoHumano.add(baraja.robarCarta());
+                selecionaColorPane.setVisible(true);
+            }
+        }   else if (cartaInicial.getHabilidad().equals("SelectColor")) {
+            selecionaColorPane.setVisible(true);
+        }
 
         // Mostrar mano del jugador humano
         mostrarCartasJugador();
