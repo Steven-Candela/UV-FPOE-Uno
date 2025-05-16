@@ -86,6 +86,7 @@ public class GameController {
         }   else if (cartaInicial.getHabilidad().equals("skip")) {
             System.out.println("El jugador pierde su turno, la primera carta es un skip");
             turnoHumano = false;
+            jugarTurnoCPU();
         }
 
         // Mostrar mano del jugador humano
