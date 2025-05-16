@@ -274,10 +274,19 @@ public class GameController {
      */
     @FXML
     private void validarCarta(Carta carta) throws CartaInvalidaException {
-        if (!carta.getColor().equals(cartaCentroActual.getColor()) &&
-        carta.getValor() != cartaCentroActual.getValor()) {
-            if (!carta.getColor().equals("All")) {
-                throw new CartaInvalidaException("Carta Invalida");
+        if (carta.EsEspecial()) {
+            if (!carta.getColor().equals(cartaCentroActual.getColor()) &&
+                    carta.getHabilidad() != cartaCentroActual.getHabilidad()) {
+                if (!carta.getColor().equals("All")) {
+                    throw new CartaInvalidaException("Carta Invalida");
+                }
+            }
+        } else {
+            if (!carta.getColor().equals(cartaCentroActual.getColor()) &&
+                    carta.getValor() != cartaCentroActual.getValor()) {
+                if (!carta.getColor().equals("All")) {
+                    throw new CartaInvalidaException("Carta Invalida");
+                }
             }
         }
     }
