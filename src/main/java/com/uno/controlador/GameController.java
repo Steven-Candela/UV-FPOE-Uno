@@ -2,7 +2,6 @@ package com.uno.controlador;
 
 import com.uno.modelo.Baraja;
 import com.uno.modelo.Carta;
-import com.uno.modelo.CartaEspecial;
 import com.uno.modelo.CartaInvalidaException;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
@@ -20,6 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Clase GameController que gestiona la lógica del juego, incluyendo el manejo de turnos,
+ * acciones de las cartas especiales, interacción con la interfaz de usuario y el flujo
+ * general del juego.
+ *
+ * @author Nicolle Paz, Steven Candela y Camilo Portilla
+ */
 public class GameController {
 
     private Baraja baraja;
@@ -50,6 +56,10 @@ public class GameController {
 
     @FXML private Button pasarTurnoButton;
 
+    /**
+     * Método que se llama automáticamente al iniciar la interfaz FXML.
+     * Inicializa el juego, reparte las cartas y actualiza la vista.
+     */
     @FXML
     private void initialize() {
         selecionaColorPane.setVisible(false);
@@ -69,6 +79,10 @@ public class GameController {
         mostrarCartasMaquina();
     }
 
+    /**
+     * Muestra la carta actual en el centro del juego.
+     * @param carta, es la carta que se mostrará en el centro.
+     */
     private void mostrarCartaCentral(Carta carta) {
         if (carta != null) {
             cartaCentroActual = carta;
@@ -78,6 +92,10 @@ public class GameController {
         }
     }
 
+    /**
+     * Muestra las cartas actuales en la mano del jugador humano.
+     * También asigna el evento de selección para cada carta.
+     */
     private void mostrarCartasJugador() {
         manoJugador.getChildren().clear();
 
@@ -98,6 +116,9 @@ public class GameController {
         unoButton.setDisable(manoHumano.size() != 1);
     }
 
+    /**
+     * Muestra la cantidad de cartas actuales de la CPU, usando la imagen del reverso.
+     */
     private void mostrarCartasMaquina() {
         manoMaquina.getChildren().clear();
 
@@ -110,6 +131,9 @@ public class GameController {
         }
     }
 
+    /**
+     * Muestra por un lapso de tiempo una etiqueta visual cuando se presiona el botón UNO.
+     */
     private void mostrarUnoVisual() {
         unoVisualLabel.setVisible(true);
         unoVisualLabel.setOpacity(1.0);
@@ -118,6 +142,12 @@ public class GameController {
         pause.play();
     }
 
+    /**
+     * Evento que se ejecuta al presionar el botón "Jugar Carta".
+     * Valida la carta seleccionada, actualiza el estado del juego
+     * y maneja los hilos con un lapso de tiempo determinado
+     * @param event, un evento de acción (ActionEvent).
+     */
     @FXML
     private void onActionJugarCartaButton(ActionEvent event) {
         if (!turnoHumano) {
@@ -191,6 +221,11 @@ public class GameController {
         }
     }
 
+    /**
+     * Valida si una carta puede ser jugada según la carta central.
+     * @param carta, la carta que se quiere jugar.
+     * @throws CartaInvalidaException si la carta no cumple las reglas.
+     */
     @FXML
     private void validarCarta(Carta carta) throws CartaInvalidaException {
         if (!carta.getColor().equals(cartaCentroActual.getColor()) &&
@@ -201,6 +236,11 @@ public class GameController {
         }
     }
 
+    /**
+     * Lógica de turno de la CPU. Busca una carta válida o roba si no tiene.
+     * También maneja el momento en que la CPU dice "UNO" si le queda una sola carta.
+     * Al final del turno, verifica si la CPU ha ganado.
+     */
     private void jugarTurnoCPU() {
         turnoLabel.setText("Turno: Máquina");
 
@@ -269,6 +309,11 @@ public class GameController {
         pausa.play();
     }
 
+    /**
+     * Verifica si la mano dada contiene al menos una carta válida para jugar.
+     * @param mano, la mano de cartas a verificar.
+     * @return true si hay al menos una carta válida, false si no.
+     */
     private boolean tieneCartaValida(List<Carta> mano) {
         for (Carta carta : mano) {
             try {
@@ -280,7 +325,11 @@ public class GameController {
         return false;
     }
 
-
+    /**
+     * Evento para manejar la acción del botón "Pasar turno".
+     * Roba una carta si no hay jugadas posibles.
+     * @param event, un evento de acción (ActionEvent).
+     */
     @FXML
     private void onActionPasarTurnoButton(ActionEvent event) {
         if (turnoHumano) {
@@ -299,6 +348,11 @@ public class GameController {
         }
     }
 
+    /**
+     * Evento al presionar el botón "UNO". Verifica condiciones y penaliza
+     * si la CPU no lo dijo a tiempo.
+     * @param event, un evento de acción (ActionEvent).
+     */
     @FXML
     private void onActionUnoButton(ActionEvent event) {
         if (manoHumano.size() == 1) {
@@ -316,7 +370,13 @@ public class GameController {
         }
     }
 
-
+    /**
+     * Aplica los efectos especiales de una carta (como +2, +4, skip, elegir color).
+     * @param cartaEspecial, la carta especial jugada.
+     * @param TurnoesHumano, indica si el turno es del jugador humano.
+     * @param color, el color actual antes de aplicar la carta especial.
+     * @return el nuevo color si la carta lo cambia, o el mismo si no.
+     */
     private String EspecialJugada(Carta cartaEspecial, boolean TurnoesHumano, String color) {
         String[] colores = {"blue", "red", "green", "yellow"};
         String habilidad = cartaEspecial.getHabilidad();
@@ -394,6 +454,11 @@ public class GameController {
         return color;
     }
 
+    /**
+     * Evento para manejar la selección de color cuando se juega una carta comodín.
+     * El color se elige mediante un botón (rojo, azul, verde, amarillo).
+     * @param event, un evento de acción (ActionEvent).
+     */
     @FXML
     private void onSeleccionColor (ActionEvent event) {
         Button botonColor = (Button) event.getSource();
@@ -420,6 +485,12 @@ public class GameController {
         jugarTurnoCPU();
     }
 
+    /**
+     * Intenta robar una cantidad determinada de cartas de la baraja.
+     * Si la baraja está vacía, se reinicia usando las cartas jugadas.
+     * @param cantidad, el número de cartas a robar.
+     * @return la lista de cartas robadas.
+     */
     private List<Carta> intentarRobarCartas(int cantidad) {
         if (cantidad <= 0) {
             return new ArrayList<>();
@@ -443,6 +514,10 @@ public class GameController {
         return cartasRobadas;
     }
 
+    /**
+     * Finaliza el juego mostrando un mensaje y desactivando la interfaz.
+     * @param mensaje Mensaje que indica quién ganó.
+     */
     private void finalizarJuego(String mensaje) {
         turnoLabel.setText(mensaje);
 
