@@ -62,6 +62,8 @@ public class GameController {
      */
     @FXML
     private void initialize() {
+        String[] colores = {"blue", "red", "green", "yellow"};
+
         selecionaColorPane.setVisible(false);
         baraja = new Baraja();
 
@@ -83,11 +85,20 @@ public class GameController {
         } else if (cartaInicial.getHabilidad().equals("+4")) {
             for (int i = 0; i < 4; i++) {
                 manoHumano.add(baraja.robarCarta());
-                selecionaColorPane.setVisible(true);
+                Random rand = new Random();
+                int indice = rand.nextInt(colores.length);
+                String colorElegido = colores[indice];
+                System.out.println("Color elegido: " + colorElegido);
+                cartaCentroActual.setColor(colorElegido);
             }
-        }   else if (cartaInicial.getHabilidad().equals("SelectColor")) {
+        } else if (cartaInicial.getHabilidad().equals("SelectColor")) {
             selecionaColorPane.setVisible(true);
-        }   else if (cartaInicial.getHabilidad().equals("skip")) {
+            Random rand = new Random();
+            int indice = rand.nextInt(colores.length);
+            String colorElegido = colores[indice];
+            System.out.println("Color elegido: " + colorElegido);
+            cartaCentroActual.setColor(colorElegido);
+        } else if (cartaInicial.getHabilidad().equals("skip")) {
             System.out.println("El jugador pierde su turno, la primera carta es un skip");
             turnoHumano = false;
             jugarTurnoCPU();
@@ -425,6 +436,11 @@ public class GameController {
      * @return el nuevo color si la carta lo cambia, o el mismo si no.
      */
     private String EspecialJugada(Carta cartaEspecial, boolean TurnoesHumano, String color) {
+
+        System.out.println("===============================================================");
+        System.out.println("Se llama a la función EspecialJugada");
+        System.out.println("===============================================================");
+
         String[] colores = {"blue", "red", "green", "yellow"};
         String habilidad = cartaEspecial.getHabilidad();
         if (habilidad.equals("skip")){
