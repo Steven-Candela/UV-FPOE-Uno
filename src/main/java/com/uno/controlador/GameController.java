@@ -70,7 +70,11 @@ public class GameController {
         manoCPU = baraja.robarVarias(5);
 
         // Carta inicial al centro
-        Carta cartaInicial = baraja.robarCarta();
+        Carta cartaInicial;
+        do {
+            cartaInicial = baraja.robarCarta();
+        } while (cartaInicial.EsEspecial());
+
         mostrarCartaCentral(cartaInicial);
         if (cartaInicial.getHabilidad().equals("+2")) {
             for (int i = 0; i < 2; i++) {
@@ -93,6 +97,14 @@ public class GameController {
         mostrarCartasJugador();
         // Mostrar mano de la máquina
         mostrarCartasMaquina();
+        String textoValor = (cartaCentroActual.getValor() == -999999999) ? cartaCentroActual.getHabilidad() : String.valueOf(cartaCentroActual.getValor());
+        turnoLabel.setText("Turno: Jugador" + " / Color Actual: " + cartaCentroActual.getColor() + " / Última Carta: " + textoValor);
+    }
+
+    private void mensajeEstadoActual() {
+        String jugadorActual = turnoHumano ? "Jugador" : "Maquina";;
+        String textoValor = (cartaCentroActual.getValor() == -999999999) ? cartaCentroActual.getHabilidad() : String.valueOf(cartaCentroActual.getValor());
+        turnoLabel.setText("Turno: " + jugadorActual + " / Color Actual: " + cartaCentroActual.getColor() + " / Última Carta: " + textoValor);
     }
 
     /**
@@ -192,6 +204,10 @@ public class GameController {
                     return; // Espera que el jugador elija un color
                 }
 
+                if (cartaSeleccionada.EsEspecial()) {
+                    return;
+                }
+
                 cartaSeleccionada = null;
                 mostrarCartasMaquina();
                 mostrarCartasJugador();
@@ -224,10 +240,13 @@ public class GameController {
                         }
                     }).start();
                 }
-                if (!turnoCambio) {
+                /*if (!turnoCambio) {
                     turnoHumano = false;
                     jugarTurnoCPU();
-                }
+                }*/
+                turnoHumano = false;
+                mensajeEstadoActual();
+                jugarTurnoCPU();
                 turnoCambio = false;
             } catch (CartaInvalidaException e) {
                 System.out.println(e.getMessage());
@@ -258,71 +277,82 @@ public class GameController {
      * Al final del turno, verifica si la CPU ha ganado.
      */
     private void jugarTurnoCPU() {
-        turnoLabel.setText("Turno: Máquina");
+        if (!turnoHumano) {
+            //turnoLabel.setText("Turno: " + jugadorActual + " / Color Actual: " + cartaCentroActual.getColor() + " / Última Carta: " + textoValor);
 
-        Random random = new Random();
-        int tiempoPensamiento = 1 + random.nextInt(3);
-        PauseTransition pausa = new PauseTransition(Duration.seconds(tiempoPensamiento));
-        pausa.setOnFinished(e -> {
-            System.out.println("La maquina está pensando");
+            Random random = new Random();
+            int tiempoPensamiento = 1 + random.nextInt(3);
+            PauseTransition pausa = new PauseTransition(Duration.seconds(tiempoPensamiento));
+            pausa.setOnFinished(e -> {
+                System.out.println("La maquina está pensando");
 
-            // Busca una carta valida
-            for (Carta carta : manoCPU) {
-                if (carta.getColor().equals(cartaCentroActual.getColor()) ||
-                        carta.getValor() == cartaCentroActual.getValor()) {
+                // Busca una carta valida
+                for (Carta carta : manoCPU) {
+                    if (carta.getColor().equals(cartaCentroActual.getColor()) ||
+                            carta.getValor() == cartaCentroActual.getValor()) {
 
-                    System.out.println("La maquina juega: " + carta);
-                    mostrarCartaCentral(carta);
-                    cartaSeleccionada = carta;
-                    if(cartaSeleccionada.EsEspecial()){
-                        cartaSeleccionada.setColor(EspecialJugada(cartaSeleccionada, turnoHumano, cartaSeleccionada.getColor()));
-                        cartaCentroActual.setColor(cartaSeleccionada.getColor());
-                    }
-                    manoCPU.remove(carta);
-                    mostrarCartasMaquina();
-                    mostrarCartasJugador();
+                        System.out.println("La maquina juega: " + carta);
+                        mostrarCartaCentral(carta);
+                        cartaSeleccionada = carta;
+                        if(cartaSeleccionada.EsEspecial()){
+                            cartaSeleccionada.setColor(EspecialJugada(cartaSeleccionada, turnoHumano, cartaSeleccionada.getColor()));
+                            cartaCentroActual.setColor(cartaSeleccionada.getColor());
+                            mensajeEstadoActual();
+                        }
+                        manoCPU.remove(carta);
+                        mostrarCartasMaquina();
+                        mostrarCartasJugador();
 
-                    if (manoCPU.isEmpty()) {
-                        finalizarJuego("¡La máquina ha ganado!");
+                        if (manoCPU.isEmpty()) {
+                            finalizarJuego("¡La máquina ha ganado!");
+                            return;
+                        }
+
+                        if (manoCPU.size() == 1) {
+                            unoButton.setDisable(false);
+                            cpuDijoUNO = false;
+
+                            new Thread(() -> {
+                                try {
+                                    Thread.sleep(2000 + new Random().nextInt(2000)); // 2 a 4 segundos
+                                    if (!cpuDijoUNO) {
+                                        cpuDijoUNO = true;
+                                        Platform.runLater(() -> System.out.println("La máquina dice UNO a tiempo"));
+                                        mostrarUnoVisual();
+                                    }
+                                } catch (InterruptedException ex) {
+                                    ex.printStackTrace();
+                                }
+                            }).start();
+                        }
+
+                        if (cartaSeleccionada.EsEspecial()) {
+                            return;
+                        }
+                        /*if (!turnoCambio){
+                            turnoLabel.setText("Turno: Jugador");
+                            turnoHumano = true;
+                        } else {
+                            turnoCambio = false;
+                            jugarTurnoCPU();
+                        }*/
+                        //turnoLabel.setText("Turno: " + jugadorActual + " / Color Actual: " + cartaCentroActual.getColor() + " / Última Carta: " + textoValor);
+                        turnoHumano = true;
+                        mensajeEstadoActual();
                         return;
                     }
-
-                    if (manoCPU.size() == 1) {
-                        unoButton.setDisable(false);
-                        cpuDijoUNO = false;
-
-                        new Thread(() -> {
-                            try {
-                                Thread.sleep(2000 + new Random().nextInt(2000)); // 2 a 4 segundos
-                                if (!cpuDijoUNO) {
-                                    cpuDijoUNO = true;
-                                    Platform.runLater(() -> System.out.println("La máquina dice UNO a tiempo"));
-                                    mostrarUnoVisual();
-                                }
-                            } catch (InterruptedException ex) {
-                                ex.printStackTrace();
-                            }
-                        }).start();
-                    }
-                    if (!turnoCambio){
-                        turnoLabel.setText("Turno: Jugador");
-                        turnoHumano = true;
-                    } else {
-                        turnoCambio = false;
-                        jugarTurnoCPU();
-                    }
-                    return;
                 }
-            }
-            // Si no tiene carta valida, roba una
-            List<Carta> robadasCPU = intentarRobarCartas(1);
-            manoCPU.addAll(robadasCPU);
-            System.out.println("La maquina no tiene carta valida, roba una de la baraja");
-            turnoLabel.setText("Turno: Jugador");
-            turnoHumano = true;
-            mostrarCartasMaquina();
-        });
-        pausa.play();
+                // Si no tiene carta valida, roba una
+                List<Carta> robadasCPU = intentarRobarCartas(1);
+                manoCPU.addAll(robadasCPU);
+                System.out.println("La maquina no tiene carta valida, roba una de la baraja");
+                turnoHumano = true;
+                mensajeEstadoActual();
+                //turnoLabel.setText("Turno: " + jugadorActual + " / Color Actual: " + cartaCentroActual.getColor() + " / Última Carta: " + textoValor);
+                mostrarCartasMaquina();
+            });
+            pausa.play();
+        }
     }
 
     /**
@@ -358,6 +388,7 @@ public class GameController {
             mostrarCartasJugador();
             // Cambia el turno
             turnoHumano = false;
+            mensajeEstadoActual();
             jugarTurnoCPU();
         } else {
             System.out.println("No puedes robar cartas mientras no es tu turno");
@@ -401,29 +432,36 @@ public class GameController {
                 System.out.println("El jugador ha usado una carta de skip");
                 System.out.println("La maquina pierde su turno");
                 turnoHumano = true;
+                mensajeEstadoActual();
                 turnoCambio = true;
             } else {
                 System.out.println("La maquina ha usado una carta de skip");
                 System.out.println("El jugador pierde su turno");
                 turnoHumano = false;
+                mensajeEstadoActual();
                 turnoCambio = true;
+                jugarTurnoCPU();
             }
         }
         if (habilidad.equals("+2")){
             if (!TurnoesHumano) {
                 List<Carta> robadasHumano = intentarRobarCartas(2);
                 manoHumano.addAll(robadasHumano);
+                mostrarCartasJugador();
                 System.out.println("La maquina jugó un +2, el jugador roba 2 cartas");
                 System.out.println("El jugador pierde su turno");
                 turnoHumano = false;
+                mensajeEstadoActual();
                 turnoCambio = true;
-
+                jugarTurnoCPU();
             } else {
                 List<Carta> robadasMaquina = intentarRobarCartas(2);
                 manoCPU.addAll(robadasMaquina);
-                System.out.println("La jugador jugó un +2, la maquina roba 2 cartas");
+                mostrarCartasMaquina();
+                System.out.println("El jugador jugó un +2, la maquina roba 2 cartas");
                 System.out.println("La maquina pierde su turno");
                 turnoHumano = true;
+                mensajeEstadoActual();
                 turnoCambio = true;
             }
         }
@@ -431,6 +469,7 @@ public class GameController {
             if (!TurnoesHumano) {
                 List<Carta> robadasHumano = intentarRobarCartas(4);
                 manoHumano.addAll(robadasHumano);
+                mostrarCartasJugador();
                 System.out.println("La maquina jugó un +4, el jugador roba 4 cartas");
                 System.out.println("La maquina está eligiendo un color...");
                 Random rand = new Random();
@@ -440,17 +479,15 @@ public class GameController {
                 color = colorElegido;
                 System.out.println("El jugador pierde su turno");
                 turnoHumano = false;
-                turnoCambio = true;
-
+                jugarTurnoCPU();
             } else {
-                List<Carta> robadasMaquina = intentarRobarCartas(2);
+                List<Carta> robadasMaquina = intentarRobarCartas(4);
                 manoCPU.addAll(robadasMaquina);
+                mostrarCartasMaquina();
                 //Elegir color manualmente (Jugador)
 
                 System.out.println("El jugador jugó un +4, la maquina roba 4 cartas");
                 System.out.println("La maquina pierde su turno");
-                turnoHumano = true;
-                turnoCambio = true;
             }
         }
 
@@ -462,8 +499,13 @@ public class GameController {
                 String colorElegido = colores[indice];
                 System.out.println("Color elegido: " + colorElegido);
                 color = colorElegido;
+                turnoHumano = true;
+                mensajeEstadoActual();
             } else {
                 System.out.println("el humano elije un color...");
+                turnoHumano = false;
+                mensajeEstadoActual();
+                jugarTurnoCPU();
             }
         }
         System.out.println(color);
@@ -479,6 +521,7 @@ public class GameController {
     private void onSeleccionColor (ActionEvent event) {
         Button botonColor = (Button) event.getSource();
         String id = botonColor.getId();
+
 
         switch (id) {
             case "rojoButton":
@@ -496,9 +539,17 @@ public class GameController {
         }
         selecionaColorPane.setVisible(false);
         System.out.println("El jugador selecciono el color " + cartaCentroActual.getColor());
+        mensajeEstadoActual();
 
-        turnoHumano = false;
-        jugarTurnoCPU();
+        if (cartaCentroActual.getHabilidad().equals("SelectColor") && turnoHumano == true) {
+            turnoHumano = false;
+            jugarTurnoCPU();
+        } else {
+            turnoHumano = true;
+        }
+
+        //turnoHumano = true;
+        //jugarTurnoCPU();
     }
 
     /**
@@ -524,9 +575,9 @@ public class GameController {
                 }
                 break;
             }
+            Carta robada = baraja.robarCarta();
+            cartasRobadas.add(robada);
         }
-        Carta robada = baraja.robarCarta();
-        cartasRobadas.add(robada);
         return cartasRobadas;
     }
 
