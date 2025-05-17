@@ -15,7 +15,13 @@ import java.io.IOException;
  * @author Nicolle Paz
  */
 public class MenuController {
-
+    /**
+     * Maneja el evento del botón "Jugar".
+     * Carga la vista del juego y la muestra en la ventana actual.
+     *
+     * @param event, el evento de acción generado por el botón
+     * @throws IOException si ocurre un error al cargar la vista FXML del juego
+     */
     @FXML
     private void onActionJugarButton(ActionEvent event) throws IOException {
         System.out.println("El juego inicia");
@@ -27,6 +33,13 @@ public class MenuController {
         stage.show();
     }
 
+    /**
+     * Maneja el evento del botón "Créditos".
+     * Carga la vista de créditos y la muestra en la ventana actual.
+     *
+     * @param event el evento de acción generado por el botón
+     * @throws IOException si ocurre un error al cargar la vista FXML de créditos
+     */
     @FXML
     private void onActionCreditosButton(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/uno/credits-view.fxml"));
@@ -37,11 +50,24 @@ public class MenuController {
         stage.show();
     }
 
+    /**
+     * Maneja el evento del botón "Salir".
+     * Cierra la aplicación.
+     *
+     * @param event, el evento de acción generado por el botón
+     */
     @FXML
     private void onActionSalirButton(ActionEvent event) {
         System.exit(0);
     }
 
+    /**
+     * Maneja el evento del botón "Instrucciones".
+     * Carga la vista de instrucciones y la muestra en la ventana actual.
+     *
+     * @param event, el evento de acción generado por el botón
+     * @throws IOException si ocurre un error al cargar la vista FXML de instrucciones
+     */
     @FXML
     private void onActionInstruccionesButton(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/uno/instructions-view.fxml"));

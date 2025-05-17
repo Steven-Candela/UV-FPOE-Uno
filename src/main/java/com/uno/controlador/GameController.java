@@ -112,6 +112,12 @@ public class GameController {
         turnoLabel.setText("Turno: Jugador" + " / Color Actual: " + cartaCentroActual.getColor() + " / Última Carta: " + textoValor);
     }
 
+    /**
+     * Actualiza la etiqueta de turno con el estado actual del juego.
+     *
+     * Muestra quién tiene el turno (jugador o máquina), el color de la carta central
+     * y el valor o habilidad de dicha carta.
+     */
     private void mensajeEstadoActual() {
         String jugadorActual = turnoHumano ? "Jugador" : "Maquina";;
         String textoValor = (cartaCentroActual.getValor() == -999999999) ? cartaCentroActual.getHabilidad() : String.valueOf(cartaCentroActual.getValor());
