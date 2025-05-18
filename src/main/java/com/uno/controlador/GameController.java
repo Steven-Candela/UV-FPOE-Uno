@@ -282,7 +282,7 @@ public class GameController {
     private void validarCarta(Carta carta) throws CartaInvalidaException {
         if (carta.EsEspecial()) {
             if (!carta.getColor().equals(cartaCentroActual.getColor()) &&
-                    carta.getHabilidad() != cartaCentroActual.getHabilidad()) {
+                    !carta.getHabilidad().equals(cartaCentroActual.getHabilidad())) {
                 if (!carta.getColor().equals("All")) {
                     throw new CartaInvalidaException("Carta Invalida");
                 }
@@ -314,8 +314,8 @@ public class GameController {
 
                 // Busca una carta valida
                 for (Carta carta : manoCPU) {
-                    if (carta.getColor().equals(cartaCentroActual.getColor()) ||
-                            carta.getValor() == cartaCentroActual.getValor()) {
+                    try {
+                        validarCarta(carta);
 
                         System.out.println("La maquina juega: " + carta);
                         mostrarCartaCentral(carta);
@@ -337,10 +337,9 @@ public class GameController {
                         if (manoCPU.size() == 1) {
                             unoButton.setDisable(false);
                             cpuDijoUNO = false;
-
                             new Thread(() -> {
                                 try {
-                                    Thread.sleep(2000 + new Random().nextInt(2000)); // 2 a 4 segundos
+                                    Thread.sleep(2000 + new Random().nextInt(2000));
                                     if (!cpuDijoUNO) {
                                         cpuDijoUNO = true;
                                         Platform.runLater(() -> System.out.println("La máquina dice UNO a tiempo"));
@@ -355,17 +354,13 @@ public class GameController {
                         if (cartaSeleccionada.EsEspecial()) {
                             return;
                         }
-                        /*if (!turnoCambio){
-                            turnoLabel.setText("Turno: Jugador");
-                            turnoHumano = true;
-                        } else {
-                            turnoCambio = false;
-                            jugarTurnoCPU();
-                        }*/
-                        //turnoLabel.setText("Turno: " + jugadorActual + " / Color Actual: " + cartaCentroActual.getColor() + " / Última Carta: " + textoValor);
+
                         turnoHumano = true;
                         mensajeEstadoActual();
                         return;
+
+                    } catch (CartaInvalidaException ex) {
+                        // No es válida, pasa a la siguiente
                     }
                 }
                 // Si no tiene carta valida, roba una
