@@ -10,12 +10,12 @@ public class Carta {
 
     private String color;
     private int valor;
-    private String imagen; // nombre del archivo, ej: "3_red.png"
+    private String imagen; // nombre del archivo, ej: "3_rojo.png"
 
     /**
      * Constructor de una carta numérica.
      *
-     * @param color, el color de la carta (red, blue, green, yellow).
+     * @param color, el color de la carta (rojo, azul, verde, amarillo).
      * @param valor, el valor numérico de la carta (0-9).
      */
     public Carta(String color, int valor) {

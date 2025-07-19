@@ -62,7 +62,7 @@ public class GameController {
      */
     @FXML
     private void initialize() {
-        String[] colores = {"blue", "red", "green", "yellow"};
+        String[] colores = {"azul", "rojo", "verde", "amarillo"};
 
         selecionaColorPane.setVisible(false);
         baraja = new Baraja();
@@ -91,15 +91,15 @@ public class GameController {
                 System.out.println("Color elegido: " + colorElegido);
                 cartaCentroActual.setColor(colorElegido);
             }
-        } else if (cartaInicial.getHabilidad().equals("SelectColor")) {
+        } else if (cartaInicial.getHabilidad().equals("Seleccionar color")) {
             selecionaColorPane.setVisible(true);
             Random rand = new Random();
             int indice = rand.nextInt(colores.length);
             String colorElegido = colores[indice];
             System.out.println("Color elegido: " + colorElegido);
             cartaCentroActual.setColor(colorElegido);
-        } else if (cartaInicial.getHabilidad().equals("skip")) {
-            System.out.println("El jugador pierde su turno, la primera carta es un skip");
+        } else if (cartaInicial.getHabilidad().equals("saltar")) {
+            System.out.println("El jugador pierde su turno, la primera carta es saltar");
             turnoHumano = false;
             jugarTurnoCPU();
         }
@@ -132,6 +132,7 @@ public class GameController {
         if (carta != null) {
             cartaCentroActual = carta;
             String ruta = "/com/uno/imagenes/" + carta.getImagen();
+            System.out.println("Nombre imagen: " + carta.getImagen());
             Image img = new Image(getClass().getResourceAsStream(ruta));
             cartaCentro.setImage(img);
         }
@@ -216,7 +217,7 @@ public class GameController {
                     return;
                 }
 
-                if (cartaSeleccionada.getColor().equals("All")) {
+                if (cartaSeleccionada.getColor().equals("Cualquiera")) {
                     selecionaColorPane.setVisible(true);
                     return; // Espera que el jugador elija un color
                 }
@@ -283,14 +284,14 @@ public class GameController {
         if (carta.EsEspecial()) {
             if (!carta.getColor().equals(cartaCentroActual.getColor()) &&
                     !carta.getHabilidad().equals(cartaCentroActual.getHabilidad())) {
-                if (!carta.getColor().equals("All")) {
+                if (!carta.getColor().equals("Cualquiera")) {
                     throw new CartaInvalidaException("Carta Invalida");
                 }
             }
         } else {
             if (!carta.getColor().equals(cartaCentroActual.getColor()) &&
                     carta.getValor() != cartaCentroActual.getValor()) {
-                if (!carta.getColor().equals("All")) {
+                if (!carta.getColor().equals("Cualquiera")) {
                     throw new CartaInvalidaException("Carta Invalida");
                 }
             }
@@ -439,7 +440,7 @@ public class GameController {
     }
 
     /**
-     * Aplica los efectos especiales de una carta (como +2, +4, skip, elegir color).
+     * Aplica los efectos especiales de una carta (como +2, +4, saltar, elegir color).
      * @param cartaEspecial, la carta especial jugada.
      * @param TurnoesHumano, indica si el turno es del jugador humano.
      * @param color, el color actual antes de aplicar la carta especial.
@@ -451,17 +452,17 @@ public class GameController {
         System.out.println("Se llama a la función EspecialJugada");
         System.out.println("===============================================================");
 
-        String[] colores = {"blue", "red", "green", "yellow"};
+        String[] colores = {"azul", "rojo", "verde", "amarillo"};
         String habilidad = cartaEspecial.getHabilidad();
-        if (habilidad.equals("skip")){
+        if (habilidad.equals("saltar")){
             if (TurnoesHumano) {
-                System.out.println("El jugador ha usado una carta de skip");
+                System.out.println("El jugador ha usado una carta para saltar");
                 System.out.println("La maquina pierde su turno");
                 turnoHumano = true;
                 mensajeEstadoActual();
                 turnoCambio = true;
             } else {
-                System.out.println("La maquina ha usado una carta de skip");
+                System.out.println("La maquina ha usado una carta de saltar");
                 System.out.println("El jugador pierde su turno");
                 turnoHumano = false;
                 mensajeEstadoActual();
@@ -517,7 +518,7 @@ public class GameController {
             }
         }
 
-        if (habilidad.equals("SelectColor")) {
+        if (habilidad.equals("Seleccionar color")) {
             if(!TurnoesHumano) {
                 System.out.println("La maquina está eligiendo un color...");
                 Random rand = new Random();
@@ -548,23 +549,23 @@ public class GameController {
 
         switch (id) {
             case "rojoButton":
-                cartaCentroActual.setColor("red");
+                cartaCentroActual.setColor("rojo");
                 break;
             case "azulButton":
-                cartaCentroActual.setColor("blue");
+                cartaCentroActual.setColor("azul");
                 break;
             case "amarilloButton":
-                cartaCentroActual.setColor("yellow");
+                cartaCentroActual.setColor("amarillo");
                 break;
             case "verdeButton":
-                cartaCentroActual.setColor("green");
+                cartaCentroActual.setColor("verde");
                 break;
         }
         selecionaColorPane.setVisible(false);
         System.out.println("El jugador selecciono el color " + cartaCentroActual.getColor());
         mensajeEstadoActual();
 
-        if (cartaCentroActual.getHabilidad().equals("SelectColor") && turnoHumano == true) {
+        if (cartaCentroActual.getHabilidad().equals("Seleccionar color") && turnoHumano == true) {
             turnoHumano = false;
             mensajeEstadoActual();
             jugarTurnoCPU();

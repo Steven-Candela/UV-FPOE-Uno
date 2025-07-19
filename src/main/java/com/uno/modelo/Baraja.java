@@ -27,18 +27,18 @@ public class Baraja {
     /**
      * Crea las cartas del juego, incluyendo:
      * - Cartas numéricas del 0 al 9 para cada color.
-     * - Cartas especiales como "skip", "+2", "+4" y "SelectColor".
+     * - Cartas especiales como "saltar", "+2", "+4" y "Seleccionar color".
      * Asigna imágenes específicas a las cartas especiales.
      */
     private void crearCartas() {
-        String[] colores = {"blue", "red", "green", "yellow"};
+        String[] colores = {"azul", "rojo", "verde", "amarillo"};
         for (int i = 0; i < 10; i++) {
             for (String color : colores) {
                 cartas.add(new Carta(color, i));
             }
         }
         for (String color : colores) {
-            cartas.add(new CartaEspecial(color, "skip"));
+            cartas.add(new CartaEspecial(color, "saltar"));
         }
         for (String color : colores) {
             for (int i = 0; i < 2; i++) {
@@ -49,13 +49,13 @@ public class Baraja {
         }
 
         for (int i = 0; i < 4; i++ ) {
-            cartas.add(new CartaEspecial("All", "+4"));
+            cartas.add(new CartaEspecial("Cualquiera", "+4"));
             Carta UltimaCarta = cartas.get(cartas.size() - 1);
             UltimaCarta.setImagen("4_wild_draw.png");
         }
 
         for (int i = 0; i < 4; i++) {
-            cartas.add(new CartaEspecial("All", "SelectColor"));
+            cartas.add(new CartaEspecial("Cualquiera", "Seleccionar color"));
             Carta UltimaCarta = cartas.get(cartas.size() - 1);
             UltimaCarta.setImagen("wild.png");
         }
