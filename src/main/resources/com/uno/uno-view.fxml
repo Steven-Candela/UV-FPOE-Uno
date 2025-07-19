@@ -63,7 +63,7 @@
                      <graphic>
                         <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@imagenes/select_color_red.png" />
+                              <Image url="@imagenes/select_color_rojo.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
@@ -74,7 +74,7 @@
                      <graphic>
                         <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@imagenes/select_color_blue.png" />
+                              <Image url="@imagenes/select_color_azul.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
@@ -85,7 +85,7 @@
                      <graphic>
                         <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@imagenes/select_color_yellow.png" />
+                              <Image url="@imagenes/select_color_amarillo.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
@@ -95,7 +95,7 @@
                      <graphic>
                         <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@imagenes/select_color_green.png" />
+                              <Image url="@imagenes/select_color_verde.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>

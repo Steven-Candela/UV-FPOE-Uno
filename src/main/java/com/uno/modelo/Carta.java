@@ -3,19 +3,20 @@ package com.uno.modelo;
 /**
  * Clase Carta, representa una carta numérica del juego UNO.
  * Las cartas tienen un color, un valor numérico (del 0 al 9) y una imagen asociada.
+ * Implementa la interfaz Validable para determinar si una carta puede ser jugada.
  *
  * @author Camilo Portilla
  */
-public class Carta {
+public class Carta implements Validable {
 
     private String color;
     private int valor;
-    private String imagen; // nombre del archivo, ej: "3_red.png"
+    private String imagen; // nombre del archivo, ej: "3_rojo.png"
 
     /**
      * Constructor de una carta numérica.
      *
-     * @param color, el color de la carta (red, blue, green, yellow).
+     * @param color, el color de la carta (rojo, azul, verde, amarillo).
      * @param valor, el valor numérico de la carta (0-9).
      */
     public Carta(String color, int valor) {
@@ -80,5 +81,22 @@ public class Carta {
      */
     public boolean EsEspecial() {
         return false;
+    }
+
+    /**
+     * Valida si esta carta puede ser jugada sobre otra carta numérica o especial.
+     * Las reglas indican que una carta numérica es válida si coincide en color o valor.
+     *
+     * @param cartaCentro la carta actualmente en el centro de la mesa.
+     * @return true si esta carta es válida para ser jugada.
+     * @throws CartaInvalidaException si no coincide ni el color ni el valor.
+     */
+    @Override
+    public boolean esValido(Carta cartaCentro) throws CartaInvalidaException {
+        if (!this.color.equals(cartaCentro.getColor()) &&
+                this.valor != cartaCentro.getValor()) {
+            throw new CartaInvalidaException("Carta numérica inválida");
+        }
+        return true;
     }
 }
