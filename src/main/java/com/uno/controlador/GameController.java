@@ -275,27 +275,15 @@ public class GameController {
     }
 
     /**
-     * Valida si una carta puede ser jugada según la carta central.
-     * @param carta, la carta que se quiere jugar.
-     * @throws CartaInvalidaException si la carta no cumple las reglas.
+     * Verifica si la carta seleccionada puede jugarse sobre la carta central actual.
+     * Llama al método {@code esValido} de la carta para comprobar si cumple con las reglas del juego.
+     *
+     * @param carta la carta que se desea jugar.
+     * @throws CartaInvalidaException si la carta no puede ser jugada según la carta central.
      */
     @FXML
     private void validarCarta(Carta carta) throws CartaInvalidaException {
-        if (carta.EsEspecial()) {
-            if (!carta.getColor().equals(cartaCentroActual.getColor()) &&
-                    !carta.getHabilidad().equals(cartaCentroActual.getHabilidad())) {
-                if (!carta.getColor().equals("Cualquiera")) {
-                    throw new CartaInvalidaException("Carta Invalida");
-                }
-            }
-        } else {
-            if (!carta.getColor().equals(cartaCentroActual.getColor()) &&
-                    carta.getValor() != cartaCentroActual.getValor()) {
-                if (!carta.getColor().equals("Cualquiera")) {
-                    throw new CartaInvalidaException("Carta Invalida");
-                }
-            }
-        }
+        carta.esValido(cartaCentroActual);
     }
 
     /**

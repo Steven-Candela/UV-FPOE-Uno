@@ -39,4 +39,25 @@ public class CartaEspecial extends Carta{
      */
     @Override
     public boolean EsEspecial() {return true;}
+
+    /**
+     * Valida si esta carta especial puede ser jugada sobre otra carta central.
+     * Las reglas permiten jugar una carta especial si:
+     * - Coincide el color
+     * - Coincide la habilidad
+     * - El color es "Cualquiera" (comodín).
+     *
+     * @param cartaCentro la carta actualmente en el centro.
+     * @return true si la carta es válida para ser jugada.
+     * @throws CartaInvalidaException si la carta no cumple las reglas de coincidencia.
+     */
+    @Override
+    public boolean esValido(Carta cartaCentro) throws CartaInvalidaException {
+        if (!this.getColor().equals(cartaCentro.getColor()) &&
+                !this.habilidad.equals(cartaCentro.getHabilidad()) &&
+                !this.getColor().equals("Cualquiera")) {
+            throw new CartaInvalidaException("Carta especial inválida");
+        }
+        return true;
+    }
 }
